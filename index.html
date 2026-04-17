@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colar — Nhật ký săn học bổng · Student's Diary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#18140f;--ink2:#3a3020;--dim:#6b5c44;
+  --paper:#fdf9f0;--paper2:#f4edd8;
+  --red:#bf2b1a;--green:#1e5c31;
+  --border:rgba(24,20,15,0.14);--tape:rgba(235,212,148,0.85);
+  --f:Mali,cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.65;overflow-x:hidden}
+/* Noise Texture Background */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E")}
+.page{max-width:620px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;position:sticky;top:0;background:var(--paper);padding:24px 0 16px;z-index:100;border-bottom:1.5px dashed var(--border)}
+.brand{font-weight:800;font-size:22px;color:var(--ink);text-decoration:none;opacity:.9; letter-spacing:-0.5px;}
+.nav-menu{display:flex;gap:20px;align-items:center;}
+.nav-links{display:flex;gap:16px;}
+.nav-link{font-size:14px;font-weight:600;color:var(--ink2);text-decoration:none;transition:color .2s;}
+.nav-link:hover{color:var(--red);}
+.nav-cta{font-family:var(--f);font-size:14px;font-weight:700;background:var(--ink);color:var(--paper);text-decoration:none;padding:8px 16px;border-radius:3px;transform:rotate(1.5deg);transition:transform .15s,box-shadow .15s;border:1.5px solid var(--ink);box-shadow:3px 3px 0 rgba(24,20,15,.2)}
+.nav-cta:hover{transform:translateY(-2px) rotate(1.5deg);box-shadow:4px 5px 0 rgba(24,20,15,.3)}
+.nav-cta:active{transform:translateY(0) rotate(1.5deg);box-shadow:1px 1px 0 rgba(24,20,15,.2)}
+
+/* BETA BAR */
+.beta-bar{display:inline-flex;align-items:center;gap:8px;background:var(--paper2);border:1.5px dashed rgba(24,20,15,.2);border-radius:3px;padding:6px 16px;margin-bottom:28px;transform:rotate(-.4deg)}
+.beta-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.beta-text{font-size:13px;font-weight:600;color:var(--dim)}
+
+/* HERO */
+.headline{font-size:clamp(34px,6.5vw,50px);font-weight:700;line-height:1.1;letter-spacing:-.4px;margin-bottom:18px}
+.hl-line{display:inline;position:relative}
+.hl-line::after{content:'';position:absolute;left:-3px;right:-3px;bottom:3px;height:6px;background:var(--red);opacity:.22;border-radius:2px;transform:rotate(-.5deg)}
+.subhead{font-size:17px;color:var(--ink2);line-height:1.7;margin-bottom:22px;max-width:520px}
+.subhead strong{font-weight:600;color:var(--ink)}
+
+/* FOUNDER NOTE */
+.founder-note{display:flex;align-items:flex-start;gap:14px;background:white;border:1.5px solid var(--border);border-radius:4px;padding:16px 18px;margin:22px 0 28px;position:relative}
+.founder-note::before{content:'';position:absolute;top:-10px;left:22px;width:40px;height:18px;background:var(--tape);border-radius:2px}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--ink);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--paper)}
+.note-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.note-text{font-size:14px;color:var(--ink2);line-height:1.6}
+
+/* FEATURES LIST */
+.what-list{list-style:none;margin:0 0 28px;display:flex;flex-direction:column;gap:10px; scroll-margin-top: 100px;}
+.what-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:var(--ink2);line-height:1.55;padding:12px 14px;background:white;border:1px solid var(--border);border-radius:3px}
+.check-icon{width:24px;height:24px;flex-shrink:0;background:var(--ink);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.check-icon svg{width:13px;height:13px;fill:none;stroke:var(--paper);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── DEMO / VIDEO SECTION ── */
+.demo-section{margin:36px 0; scroll-margin-top: 100px;}
+.demo-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:block}
+.demo-title{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.25}
+
+.video-wrap{
+  position:relative;width:100%;padding-top:56.25%; /* 16:9 Aspect Ratio */
+  border:2px solid var(--ink);border-radius:4px;overflow:hidden;
+  background:#000;transform:rotate(-.3deg);
+  box-shadow:4px 4px 0 rgba(24,20,15,.15);
+  margin-bottom:8px;
+}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+
+.video-placeholder{
+  position:absolute;inset:0;
+  background:var(--paper2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  cursor:pointer;
+}
+.play-btn{width:60px;height:60px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.play-btn svg{width:24px;height:24px;fill:var(--paper);margin-left:3px}
+.video-wrap:hover .play-btn{transform:scale(1.08)}
+.placeholder-text{font-size:15px;font-weight:600;color:var(--ink2);text-align:center;padding:0 20px}
+.placeholder-sub{font-size:13px;color:var(--dim);text-align:center}
+
+.screenshots{margin-top:20px}
+.screenshots-label{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:block}
+.ss-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.ss-card{border:1.5px solid var(--border);border-radius:4px;overflow:hidden;background:white;transform:rotate(-.3deg);position:relative}
+.ss-card:nth-child(2){transform:rotate(.4deg)}
+.ss-card:nth-child(3){transform:rotate(.2deg)}
+.ss-card:nth-child(4){transform:rotate(-.4deg)}
+.ss-card img{width:100%;height:auto;display:block;object-fit:cover}
+
+.ss-placeholder{width:100%;padding-top:62%;position:relative;background:var(--paper2)}
+.ss-placeholder-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px}
+.ss-placeholder-inner .ss-icon{font-size:20px}
+.ss-placeholder-inner p{font-size:12px;color:var(--dim);text-align:center;line-height:1.4}
+.ss-caption{font-size:11px;color:var(--dim);padding:6px 10px;background:var(--paper2);text-align:center;border-top:1px solid var(--border)}
+
+/* HOW IT WORKS */
+.how-section{background:var(--paper2);border-radius:6px;padding:24px 22px;margin:32px 0;border:1px solid var(--border); scroll-margin-top: 100px;}
+.how-title{font-size:18px;font-weight:700;margin-bottom:18px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step-item{display:flex;gap:16px;padding:14px 0;border-bottom:1px dashed var(--border);align-items:flex-start}
+.step-item:last-child{border-bottom:none}
+.step-num{font-size:32px;font-weight:700;color:rgba(24,20,15,.1);line-height:1;min-width:42px;padding-top:2px;flex-shrink:0}
+.step-body h3{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.step-body p{font-size:14px;color:var(--ink2);line-height:1.55}
+
+/* FORM */
+.form-wrap{background:white;border:2px solid var(--ink);border-radius:4px;padding:28px 24px 24px;position:relative;margin-bottom:16px; scroll-margin-top: 100px;}
+.form-wrap::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:56px;height:20px;background:var(--tape);border-radius:2px}
+.form-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.field label{font-size:13px;font-weight:600;color:var(--dim)}
+.field input,.field select,.field textarea{font-family:var(--f);font-size:15px;padding:11px 14px;border:1.5px solid rgba(24,20,15,.18);border-radius:3px;background:var(--paper);color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(24,20,15,.06)}
+.field input::placeholder,.field textarea::placeholder{color:var(--dim);opacity:.55}
+.field textarea{resize:vertical;min-height:80px;line-height:1.55}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 7l5 5 5-5' stroke='%236b5c44' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:36px}
+.field-note{font-size:12px;color:var(--dim);margin-top:3px;font-style:italic}
+.submit-btn{font-family:var(--f);font-size:16px;font-weight:700;width:100%;padding:13px;background:var(--ink);color:var(--paper);border:none;border-radius:3px;cursor:pointer;margin-top:8px;transition:transform .1s,box-shadow .12s,opacity .15s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 5px 0 rgba(24,20,15,.2)}
+.submit-btn:active{transform:translateY(0);box-shadow:0 1px 0 rgba(24,20,15,.15)}
+.submit-btn:disabled{opacity:.55;pointer-events:none}
+.form-disclaimer{font-size:12px;color:var(--dim);text-align:center;margin-top:12px;font-style:italic;line-height:1.6}
+
+/* SUCCESS STATE */
+.success-state{display:none;background:white;border:2px solid var(--ink);border-radius:4px;padding:36px 24px;text-align:center; scroll-margin-top: 100px;}
+.success-state.show{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.s-check{width:52px;height:52px;border-radius:50%;background:var(--ink);margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
+.s-check svg{width:24px;height:24px;fill:none;stroke:var(--paper);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.s-title{font-size:22px;font-weight:700;margin-bottom:8px}
+.s-sub{font-size:15px;color:var(--ink2);line-height:1.65;margin-bottom:16px}
+.s-note{font-size:13px;color:var(--dim);font-style:italic;padding:12px 16px;background:var(--paper2);border-radius:3px;line-height:1.6}
+
+/* PROOF CHIPS */
+.proof-mini{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.proof-chip{font-size:12px;font-weight:500;color:var(--dim);border:1px dashed rgba(24,20,15,.2);padding:4px 12px;border-radius:2px;background:var(--paper2)}
+
+/* ── SCRAPBOOK PASTE ANIMATION ── */
+.paste-elem {
+  opacity: 0;
+  transform: scale(1.08) rotate(var(--start-rot, 0deg));
+  filter: drop-shadow(0 12px 16px rgba(24,20,15,0.12));
+  transition: 
+    opacity 0.4s ease-out,
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.paste-elem.in {
+  opacity: 1;
+  transform: scale(1) rotate(var(--end-rot, 0deg));
+  filter: drop-shadow(0 2px 3px rgba(24,20,15,0.04));
+}
+
+@media(max-width:480px){
+  .page{padding:0 18px 60px}
+  .headline{font-size:32px}
+  .ss-grid{grid-template-columns:1fr}
+  .nav-links{display:none;} /* Ẩn menu chữ trên mobile để đỡ chật chỗ */
+  .brand{font-size: 18px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="brand" href="/">Student's Diary</a>
+    <div class="nav-menu">
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Lợi ích</a>
+        <a href="#demo" class="nav-link">Demo</a>
+        <a href="#how-to" class="nav-link">Cách dùng</a>
+      </div>
+      <a href="#form-wrap" class="nav-cta">Đăng ký ngay →</a>
+    </div>
+  </nav>
+
+  <div class="beta-bar paste-elem">
+    <div class="beta-dot"></div>
+    <span class="beta-text">Beta · đang mở giới hạn 200 slot</span>
+  </div>
+
+  <h1 class="headline paste-elem">
+    Tra học bổng<br>
+    mà <span class="hl-line">không mất</span><br>
+    cả buổi chiều.
+  </h1>
+
+  <p class="subhead paste-elem">
+    Tao gom <strong>Top 50 học bổng toàn phần</strong> trong và ngoài nước vào một chỗ,
+    để con quái vật AI "Colar" học thuộc. Mày hỏi theo ngành, GPA, quốc gia —
+    ra kết quả ngay, <strong>không cần lướt mấy chục tab.</strong>
+  </p>
+
+  <div class="founder-note paste-elem">
+    <div class="avatar">🐾</div>
+    <div>
+      <div class="note-name">He lô! Tao là Colar</div>
+      <div class="note-text">Tao đang được test thực tế xem não tao có khôn không. Nếu mày thấy tao giúp ích được hoặc tao trả lời ngu — feedback của mày quan trọng để tao khôn lên.</div>
+    </div>
+  </div>
+
+  <ul class="what-list" id="features">
+    <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Hỏi AI trực tiếp</strong> — ngành nào, GPA bao nhiêu, muốn đi đâu — ra danh sách phù hợp ngay</span></li>
+    <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>50+ học bổng xịn</strong> đã làm sạch rác: deadline, điều kiện, link apply đầy đủ</span></li>
+    <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Checklist hồ sơ</strong> theo từng loại — hỏi AI là ra ngay lộ trình, không cần mò mẫm thêm</span></li>
+  </ul>
+
+  <div class="demo-section paste-elem" id="demo">
+    <span class="demo-label">xem trước khi dùng</span>
+    <h2 class="demo-title">Não của Colar hoạt động thế nào?</h2>
+
+    <div class="video-wrap has-placeholder" id="video-wrap">
+      <div class="video-placeholder" id="video-placeholder" onclick="loadVideo()">
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <p class="placeholder-text">Demo: Test Colar hỏi về học bổng GKS</p>
+        <p class="placeholder-sub">👆 Bấm để xem (Placeholder)</p>
+      </div>
+      </div>
+    <p style="font-size:12px;color:var(--dim);text-align:center;margin-top:6px;font-style:italic">
+      Video màn hình AI Colar phân tích hồ sơ học bổng thực tế
+    </p>
+
+    <div class="screenshots">
+      <span class="screenshots-label">ảnh chụp màn hình thực tế</span>
+      <div class="ss-grid">
+        <div class="ss-card">
+          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">🎓</span><p>Hỏi học bổng Châu Âu</p></div></div>
+          <div class="ss-caption">Hỏi theo quốc gia + ngành</div>
+        </div>
+        <div class="ss-card">
+          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">📋</span><p>Checklist hồ sơ MEXT</p></div></div>
+          <div class="ss-caption">Colar ra checklist tự động</div>
+        </div>
+        <div class="ss-card">
+          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">🔍</span><p>Lọc điều kiện IELTS</p></div></div>
+          <div class="ss-caption">Lọc theo tiếng Anh hiện tại</div>
+        </div>
+        <div class="ss-card">
+          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">💬</span><p>Đánh giá tỷ lệ chọi</p></div></div>
+          <div class="ss-caption">Tips và Insights từ data sạch</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-section" id="how-to">
+    <h3 class="how-title paste-elem">3 bước để xài Colar</h3>
+    <div class="steps">
+      <div class="step-item paste-elem">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>Để lại tên + Gmail</h3>
+          <p>Tao cần Gmail chuẩn để add thẳng vào hệ thống AI của tao. Quyền riêng tư 100%.</p>
+        </div>
+      </div>
+      <div class="step-item paste-elem">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>Mở link, hỏi AI bất kỳ thứ gì</h3>
+          <p>Copy prompt mẫu, ném vào khung chat. Colar sẽ nhổ ra kết quả cho mày.</p>
+        </div>
+      </div>
+      <div class="step-item paste-elem">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3>Không cần lướt group săn học bổng nữa</h3>
+          <p>Thời gian rảnh đó để đi cày IELTS hoặc GPA đi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-wrap paste-elem" id="form-wrap">
+    <p class="form-title">Đăng ký nhận link truy cập — free 100%</p>
+    <div id="form-body">
+      <div class="field">
+        <label for="f-name">Tên của mày *</label>
+        <input type="text" id="f-name" placeholder="Nguyễn Văn A..." autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="f-email">Gmail (dùng để tao mở quyền truy cập) *</label>
+        <input type="email" id="f-email" placeholder="tenmaymay@gmail.com..." autocomplete="email">
+        <span class="field-note">Bắt buộc phải là Gmail. Tao không xài mail Yahoo.</span>
+      </div>
+      <div class="field">
+        <label for="f-year">Mày đang học năm mấy?</label>
+        <select id="f-year">
+          <option value="" disabled selected>Chọn...</option>
+          <option>Năm 1</option><option>Năm 2</option><option>Năm 3</option>
+          <option>Năm 4 / Năm cuối</option><option>Đã tốt nghiệp</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-pain">Mày đang bế tắc nhất chỗ nào khi kiếm học bổng? *</label>
+        <textarea id="f-pain" placeholder="Ví dụ: Lười đọc bài dài, không biết GPA 3.0 thì apply được cái nào..." rows="3"></textarea>
+        <span class="field-note">Tao thề tao sẽ đọc câu này để làm con Colar thông minh hơn.</span>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Mở khóa Colar cho tao →</button>
+    </div>
+    <p class="form-disclaimer">Miễn phí · Mày không mất tiền, tao không gửi spam.</p>
+  </div>
+
+  <div class="success-state" id="success-state">
+    <div class="s-check"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></div>
+    <h2 class="s-title">Đã bắt được thông tin!</h2>
+    <p class="s-sub">Hệ thống của tao đang ghi nhận Gmail của mày.<br>Tao sẽ cấp quyền và gửi link qua mail sớm nhất.</p>
+    <div class="s-note">Mày nhớ check hộp thư đến (hoặc hòm thư Rác / Spam) nhé.</div>
+  </div>
+
+  <div class="proof-mini paste-elem">
+    <span class="proof-chip">đang test Beta</span>
+    <span class="proof-chip">Google AI Backend</span>
+    <span class="proof-chip">không phí ẩn</span>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   CẤU HÌNH MAKE.COM WEBHOOK (THAY LINK CỦA MÀY VÀO ĐÂY)
+========================================================= */
+const WEBHOOK_URL = 'https://hook.eu1.make.com/2og3dyc0024zfq0aqq7qgndc85g77ve3';
+
+/* ── HIỆU ỨNG CẮT DÁN SCRAPBOOK ── */
+let delayCounter = 0;
+let resetTimer = null;
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { 
+    if(e.isIntersecting){
+      // Tính toán delay rải rác từng mảnh giấy
+      e.target.style.transitionDelay = `${delayCounter * 0.08}s`;
+      delayCounter++;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { delayCounter = 0; }, 100);
+
+      requestAnimationFrame(() => {
+        e.target.classList.add('in');
+      });
+      io.unobserve(e.target);
+    } 
+  });
+}, { threshold: 0.1 });
+
+// Cấp góc xoay (rotate) ngẫu nhiên bằng JS
+document.querySelectorAll('.paste-elem').forEach(el => {
+  const startRot = (Math.random() * 6 - 3).toFixed(2); // Vung vẩy từ -3 đến +3 độ lúc đáp vào
+  const endRot = (Math.random() * 1.5 - 0.75).toFixed(2); // Nằm lệch từ -0.75 đến +0.75 độ trên trang giấy
+  el.style.setProperty('--start-rot', `${startRot}deg`);
+  el.style.setProperty('--end-rot', `${endRot}deg`);
+  io.observe(el);
+});
+
+/* ── CHỖ CHÈN VIDEO SAU NÀY ── */
+function loadVideo() {
+  alert('Video demo đang được edit. Tao sẽ update sớm!');
+}
+
+/* ── LOGIC XỬ LÝ FORM & BẮN DATA SANG MAKE.COM ── */
+async function handleSubmit() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const year  = document.getElementById('f-year').value;
+  const pain  = document.getElementById('f-pain').value.trim();
+
+  let valid = true;
+  
+  // Validation đơn giản (Bôi đỏ nếu trống)
+  if (!name)  { document.getElementById('f-name').style.borderColor='#bf2b1a'; valid=false }
+  if (!email || !email.includes('@')) { document.getElementById('f-email').style.borderColor='#bf2b1a'; valid=false }
+  if (!pain)  { document.getElementById('f-pain').style.borderColor='#bf2b1a'; valid=false }
+  if (!valid) return;
+
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Đang đẩy data...'; 
+  btn.disabled = true;
+
+  // Đóng gói Data
+  const payload = {
+    name: name,
+    email: email,
+    year: year || "Chưa khai báo",
+    pain: pain,
+    source: 'landing_colar_beta',
+    timestamp: new Date().toISOString()
+  };
+
+  // Bắn Webhook đi
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.log("Webhook CORS block hoặc lỗi mạng, nhưng form vẫn chạy tiếp để bypass UX.");
+  }
+
+  // Chuyển giao diện sang Success State (Giao diện thành công)
+  document.getElementById('form-wrap').style.display = 'none';
+  document.getElementById('success-state').classList.add('show');
+  document.getElementById('success-state').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// Xóa viền đỏ khi user bắt đầu gõ lại
+['f-name','f-email','f-pain'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function(){ this.style.borderColor='' });
+});
+// Hỗ trợ Enter ở field email để submit nhanh
+document.getElementById('f-email').addEventListener('keydown', e => { if(e.key==='Enter') handleSubmit() });
+</script>
+</body>
+</html>
