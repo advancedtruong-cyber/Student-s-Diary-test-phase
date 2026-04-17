@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Colar — Nhật ký săn học bổng · Student's Diary</title>
+<title>Colar - Nhật ký săn học bổng · Student's Diary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -40,22 +40,31 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 .beta-text{font-size:13px;font-weight:600;color:var(--dim)}
 
-/* HERO */
+/* HERO & SKETCH EFFECTS */
 .headline{font-size:clamp(34px,6.5vw,50px);font-weight:700;line-height:1.1;letter-spacing:-.4px;margin-bottom:18px}
-.hl-line{display:inline;position:relative}
-.hl-line::after{content:'';position:absolute;left:-3px;right:-3px;bottom:3px;height:6px;background:var(--red);opacity:.22;border-radius:2px;transform:rotate(-.5deg)}
+.sketch-circle{position:relative;display:inline-block;white-space:nowrap;z-index:1}
+.sketch-circle::before{content:'';position:absolute;top:-10%;left:-6%;width:112%;height:120%;border:2.5px solid var(--red);border-radius:70% 30% 60% 40% / 40% 60% 30% 70%;transform:rotate(-2deg);z-index:-1;opacity:1}
+.sketch-underline{position:relative;display:inline-block;z-index:1}
+.sketch-underline::after{content:'';position:absolute;bottom:-2px;left:-4px;right:-4px;height:3px;background:var(--red);transform:rotate(-1.5deg);border-radius:2px;z-index:-1;opacity:1}
+
+/* DOODLES (SVG Icons) */
+.doodle-arrow{position:absolute;right:16px;top:-34px;width:38px;stroke:var(--red);fill:none;stroke-width:2.5px;stroke-linecap:round;stroke-linejoin:round;transform:rotate(10deg);opacity:0.9}
+.doodle-plane{position:absolute;left:-40px;top:-12px;width:30px;stroke:var(--red);fill:none;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round;transform:rotate(-15deg);opacity:0.9}
+.doodle-swirl{display:block;width:90px;stroke:var(--red);fill:none;stroke-width:2px;stroke-linecap:round;stroke-dasharray:5 7;margin:12px 0 0 -8px;opacity:0.8}
+
 .subhead{font-size:17px;color:var(--ink2);line-height:1.7;margin-bottom:22px;max-width:520px}
 .subhead strong{font-weight:600;color:var(--ink)}
 
 /* FOUNDER NOTE */
 .founder-note{display:flex;align-items:flex-start;gap:14px;background:white;border:1.5px solid var(--border);border-radius:4px;padding:16px 18px;margin:22px 0 28px;position:relative}
 .founder-note::before{content:'';position:absolute;top:-10px;left:22px;width:40px;height:18px;background:var(--tape);border-radius:2px}
-.avatar{width:40px;height:40px;border-radius:50%;background:var(--ink);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--paper)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--paper2);flex-shrink:0;overflow:hidden;border:1.5px solid var(--ink)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .note-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
 .note-text{font-size:14px;color:var(--ink2);line-height:1.6}
 
 /* FEATURES LIST */
-.what-list{list-style:none;margin:0 0 28px;display:flex;flex-direction:column;gap:10px; scroll-margin-top: 100px;}
+.what-list{list-style:none;margin:0 0 28px;display:flex;flex-direction:column;gap:10px;}
 .what-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:var(--ink2);line-height:1.55;padding:12px 14px;background:white;border:1px solid var(--border);border-radius:3px}
 .check-icon{width:24px;height:24px;flex-shrink:0;background:var(--ink);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .check-icon svg{width:13px;height:13px;fill:none;stroke:var(--paper);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -86,24 +95,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .placeholder-text{font-size:15px;font-weight:600;color:var(--ink2);text-align:center;padding:0 20px}
 .placeholder-sub{font-size:13px;color:var(--dim);text-align:center}
 
-.screenshots{margin-top:20px}
-.screenshots-label{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:block}
-.ss-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.ss-card{border:1.5px solid var(--border);border-radius:4px;overflow:hidden;background:white;transform:rotate(-.3deg);position:relative}
-.ss-card:nth-child(2){transform:rotate(.4deg)}
-.ss-card:nth-child(3){transform:rotate(.2deg)}
-.ss-card:nth-child(4){transform:rotate(-.4deg)}
-.ss-card img{width:100%;height:auto;display:block;object-fit:cover}
-
-.ss-placeholder{width:100%;padding-top:62%;position:relative;background:var(--paper2)}
-.ss-placeholder-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px}
-.ss-placeholder-inner .ss-icon{font-size:20px}
-.ss-placeholder-inner p{font-size:12px;color:var(--dim);text-align:center;line-height:1.4}
-.ss-caption{font-size:11px;color:var(--dim);padding:6px 10px;background:var(--paper2);text-align:center;border-top:1px solid var(--border)}
+/* HAMBURGER MENU */
+.hamburger { display: none; background: none; border: none; color: var(--ink); cursor: pointer; padding: 4px; margin-left: 8px;}
+.hamburger svg { width: 28px; height: 28px; }
 
 /* HOW IT WORKS */
 .how-section{background:var(--paper2);border-radius:6px;padding:24px 22px;margin:32px 0;border:1px solid var(--border); scroll-margin-top: 100px;}
-.how-title{font-size:18px;font-weight:700;margin-bottom:18px}
+.how-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:block}
+.how-title{position:relative;font-size:22px;font-weight:700;margin-bottom:20px;line-height:1.25;color:var(--ink)}
 .steps{display:flex;flex-direction:column;gap:0}
 .step-item{display:flex;gap:16px;padding:14px 0;border-bottom:1px dashed var(--border);align-items:flex-start}
 .step-item:last-child{border-bottom:none}
@@ -114,7 +113,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* FORM */
 .form-wrap{background:white;border:2px solid var(--ink);border-radius:4px;padding:28px 24px 24px;position:relative;margin-bottom:16px; scroll-margin-top: 100px;}
 .form-wrap::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:56px;height:20px;background:var(--tape);border-radius:2px}
-.form-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35}
+.form-title{position:relative;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35;padding-right:24px;}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .field label{font-size:13px;font-weight:600;color:var(--dim)}
 .field input,.field select,.field textarea{font-family:var(--f);font-size:15px;padding:11px 14px;border:1.5px solid rgba(24,20,15,.18);border-radius:3px;background:var(--paper);color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
@@ -162,9 +161,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 @media(max-width:480px){
   .page{padding:0 18px 60px}
   .headline{font-size:32px}
-  .ss-grid{grid-template-columns:1fr}
-  .nav-links{display:none;} /* Ẩn menu chữ trên mobile để đỡ chật chỗ */
   .brand{font-size: 18px;}
+  .nav-cta { padding: 6px 12px; font-size: 13px; }
+  .hamburger { display: flex; z-index: 102; position: relative;}
+  .nav-links {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: var(--paper); flex-direction: column; justify-content: center;
+    align-items: center; gap: 32px; z-index: 101;
+    transform: translateY(-100%); transition: transform 0.3s ease-in-out;
+    display: flex;
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-link { font-size: 22px; }
+  .doodle-plane{display:none;}
 }
 </style>
 </head>
@@ -174,124 +183,122 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <nav class="nav">
     <a class="brand" href="/">Student's Diary</a>
     <div class="nav-menu">
-      <div class="nav-links">
+      <div class="nav-links" id="nav-links">
         <a href="#features" class="nav-link">Lợi ích</a>
-        <a href="#demo" class="nav-link">Demo</a>
         <a href="#how-to" class="nav-link">Cách dùng</a>
+        <a href="#demo" class="nav-link">Demo</a>
       </div>
       <a href="#form-wrap" class="nav-cta">Đăng ký ngay →</a>
+      <button class="hamburger" id="hamburger" aria-label="Mở menu">
+        <svg viewBox="0 0 24 24"><path d="M4 12h16M4 6h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </nav>
 
   <div class="beta-bar paste-elem">
     <div class="beta-dot"></div>
-    <span class="beta-text">Beta · đang mở giới hạn 200 slot</span>
+    <span class="beta-text">Bản Beta - Giới hạn 100 người dùng đầu tiên</span>
   </div>
 
   <h1 class="headline paste-elem">
-    Tra học bổng<br>
-    mà <span class="hl-line">không mất</span><br>
-    cả buổi chiều.
+    Dẹp 100 cái tab đi.<br>
+    Kiếm học bổng giờ nhàn như <span class="sketch-underline">lướt tóp tóp</span>.
+    <svg class="doodle-swirl" viewBox="0 0 100 50"><path d="M5 25 Q 30 -10 60 25 T 95 25" /></svg>
   </h1>
 
   <p class="subhead paste-elem">
-    Tao gom <strong>Top 50 học bổng toàn phần</strong> trong và ngoài nước vào một chỗ,
-    để con quái vật AI "Colar" học thuộc. Mày hỏi theo ngành, GPA, quốc gia —
-    ra kết quả ngay, <strong>không cần lướt mấy chục tab.</strong>
+    Tao gom <strong><span class="sketch-circle">200+ học bổng</span></strong> trong và ngoài nước vào một chỗ,
+    để AI học thuộc. Mày hỏi theo ngành, GPA, quốc gia -
+    ra kết quả ngay, <strong>không cần mò mẫm vô vọng nữa.</strong>
   </p>
 
   <div class="founder-note paste-elem">
-    <div class="avatar">🐾</div>
+    <div class="avatar">
+      <img src="./avatar.png" alt="Colar">
+    </div>
     <div>
       <div class="note-name">He lô! Tao là Colar</div>
-      <div class="note-text">Tao đang được test thực tế xem não tao có khôn không. Nếu mày thấy tao giúp ích được hoặc tao trả lời ngu — feedback của mày quan trọng để tao khôn lên.</div>
+      <div class="note-text">Tao là bản Beta AI đang được mở giới hạn cho đúng 100 mạng dùng thử. Nếu mày thấy tao giúp ích được hoặc tao trả lời ngu - feedback của mày là thứ quyết định để tao khôn lên.</div>
     </div>
   </div>
 
-  <ul class="what-list" id="features">
-    <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Hỏi AI trực tiếp</strong> — ngành nào, GPA bao nhiêu, muốn đi đâu — ra danh sách phù hợp ngay</span></li>
-    <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>50+ học bổng xịn</strong> đã làm sạch rác: deadline, điều kiện, link apply đầy đủ</span></li>
-    <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Checklist hồ sơ</strong> theo từng loại — hỏi AI là ra ngay lộ trình, không cần mò mẫm thêm</span></li>
-  </ul>
-
-  <div class="demo-section paste-elem" id="demo">
-    <span class="demo-label">xem trước khi dùng</span>
-    <h2 class="demo-title">Não của Colar hoạt động thế nào?</h2>
-
-    <div class="video-wrap has-placeholder" id="video-wrap">
-      <div class="video-placeholder" id="video-placeholder" onclick="loadVideo()">
-        <div class="play-btn">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <p class="placeholder-text">Demo: Test Colar hỏi về học bổng GKS</p>
-        <p class="placeholder-sub">👆 Bấm để xem (Placeholder)</p>
-      </div>
-      </div>
-    <p style="font-size:12px;color:var(--dim);text-align:center;margin-top:6px;font-style:italic">
-      Video màn hình AI Colar phân tích hồ sơ học bổng thực tế
-    </p>
-
-    <div class="screenshots">
-      <span class="screenshots-label">ảnh chụp màn hình thực tế</span>
-      <div class="ss-grid">
-        <div class="ss-card">
-          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">🎓</span><p>Hỏi học bổng Châu Âu</p></div></div>
-          <div class="ss-caption">Hỏi theo quốc gia + ngành</div>
-        </div>
-        <div class="ss-card">
-          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">📋</span><p>Checklist hồ sơ MEXT</p></div></div>
-          <div class="ss-caption">Colar ra checklist tự động</div>
-        </div>
-        <div class="ss-card">
-          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">🔍</span><p>Lọc điều kiện IELTS</p></div></div>
-          <div class="ss-caption">Lọc theo tiếng Anh hiện tại</div>
-        </div>
-        <div class="ss-card">
-          <div class="ss-placeholder"><div class="ss-placeholder-inner"><span class="ss-icon">💬</span><p>Đánh giá tỷ lệ chọi</p></div></div>
-          <div class="ss-caption">Tips và Insights từ data sạch</div>
-        </div>
-      </div>
-    </div>
+  <div id="features" style="scroll-margin-top: 100px; padding-top: 16px;">
+    <span class="demo-label paste-elem">giá trị cốt lõi</span>
+    <h2 class="demo-title paste-elem" style="margin-bottom: 20px;">Tao làm được gì cho mày?</h2>
+    <ul class="what-list">
+      <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Hỏi AI trực tiếp</strong> - ngành nào, GPA bao nhiêu, muốn đi đâu - ra danh sách phù hợp ngay</span></li>
+      <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>200+ học bổng</strong> đã làm sạch: deadline, điều kiện, link apply đầy đủ</span></li>
+      <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Checklist hồ sơ</strong> theo từng loại - hỏi AI là ra ngay, không cần mò thêm</span></li>
+      <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Cập nhật hàng tuần</strong> - nhận email tóm tắt học bổng mới, không cần tự theo dõi</span></li>
+    </ul>
   </div>
 
   <div class="how-section" id="how-to">
-    <h3 class="how-title paste-elem">3 bước để xài Colar</h3>
+    <span class="how-label paste-elem">3 bước để dùng Colar</span>
+    <h2 class="how-title paste-elem">
+      <svg class="doodle-plane" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      Đơn giản tới mức <span class="sketch-underline">ngại nói</span>
+    </h2>
     <div class="steps">
       <div class="step-item paste-elem">
         <div class="step-num">01</div>
         <div class="step-body">
           <h3>Để lại tên + Gmail</h3>
-          <p>Tao cần Gmail chuẩn để add thẳng vào hệ thống AI của tao. Quyền riêng tư 100%.</p>
+          <p>Tao duyệt tay từng người để chống spam, sau đó add thẳng Gmail của mày vào hệ thống AI. Quyền riêng tư 100%.</p>
         </div>
       </div>
       <div class="step-item paste-elem">
         <div class="step-num">02</div>
         <div class="step-body">
           <h3>Mở link, hỏi AI bất kỳ thứ gì</h3>
-          <p>Copy prompt mẫu, ném vào khung chat. Colar sẽ nhổ ra kết quả cho mày.</p>
+          <p>"Học bổng Hàn Quốc nào phù hợp ngành Kinh tế GPA 3.2?" → Colar trả lời từ database, không vòng vo.</p>
         </div>
       </div>
       <div class="step-item paste-elem">
         <div class="step-num">03</div>
         <div class="step-body">
-          <h3>Không cần lướt group săn học bổng nữa</h3>
-          <p>Thời gian rảnh đó để đi cày IELTS hoặc GPA đi.</p>
+          <h3>Nhận cập nhật hàng tuần</h3>
+          <p>Mỗi tuần tao thêm học bổng mới vào database. Mày nhận email tóm tắt, không cần tự theo dõi.</p>
         </div>
       </div>
     </div>
   </div>
 
+  <div class="demo-section paste-elem" id="demo">
+    <span class="demo-label">xem trước khi dùng</span>
+    <h2 class="demo-title">Colar hoạt động như thế nào?</h2>
+
+    <div class="video-wrap has-placeholder" id="video-wrap">
+      <div class="video-placeholder" id="video-placeholder" onclick="loadVideo()">
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <p class="placeholder-text">Demo: hỏi Colar về học bổng KAIST</p>
+        <p class="placeholder-sub">👆 Bấm để xem (thêm video khi có)</p>
+      </div>
+      <!--
+      <iframe src="https://www.youtube.com/embed/YOUR_ID_HERE?rel=0" allowfullscreen></iframe>
+      -->
+    </div>
+    <p style="font-size:12px;color:var(--dim);text-align:center;margin-top:6px;font-style:italic">
+      Video demo thực tế notebook AI Colar đang trả lời câu hỏi học bổng
+    </p>
+  </div>
+
   <div class="form-wrap paste-elem" id="form-wrap">
-    <p class="form-title">Đăng ký nhận link truy cập — free 100%</p>
+    <p class="form-title">
+      Trở thành 1 trong 100 người đầu tiên dùng Colar
+      <svg class="doodle-arrow" viewBox="0 0 100 100"><path d="M80 20 Q 50 20 20 80 M 20 80 L 40 80 M 20 80 L 20 60"/></svg>
+    </p>
     <div id="form-body">
       <div class="field">
         <label for="f-name">Tên của mày *</label>
         <input type="text" id="f-name" placeholder="Nguyễn Văn A..." autocomplete="given-name">
       </div>
       <div class="field">
-        <label for="f-email">Gmail (dùng để tao mở quyền truy cập) *</label>
+        <label for="f-email">Gmail (dùng để cấp quyền truy cập) *</label>
         <input type="email" id="f-email" placeholder="tenmaymay@gmail.com..." autocomplete="email">
-        <span class="field-note">Bắt buộc phải là Gmail. Tao không xài mail Yahoo.</span>
+        <span class="field-note">Cần đúng Gmail - tao dùng cái này để add vào notebook</span>
       </div>
       <div class="field">
         <label for="f-year">Mày đang học năm mấy?</label>
@@ -302,26 +309,26 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         </select>
       </div>
       <div class="field">
-        <label for="f-pain">Mày đang bế tắc nhất chỗ nào khi kiếm học bổng? *</label>
-        <textarea id="f-pain" placeholder="Ví dụ: Lười đọc bài dài, không biết GPA 3.0 thì apply được cái nào..." rows="3"></textarea>
-        <span class="field-note">Tao thề tao sẽ đọc câu này để làm con Colar thông minh hơn.</span>
+        <label for="f-pain">Mày đang gặp <span class="sketch-underline">khó khăn gì</span> khi tìm học bổng? *</label>
+        <textarea id="f-pain" placeholder="Ví dụ: không biết bắt đầu từ đâu, không biết học bổng nào phù hợp GPA của mình..." rows="3"></textarea>
+        <span class="field-note">Câu này giúp tao cải thiện Colar - quan trọng nhất trong form này</span>
       </div>
-      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Mở khóa Colar cho tao →</button>
+      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Giữ 1 slot cho tao →</button>
     </div>
-    <p class="form-disclaimer">Miễn phí · Mày không mất tiền, tao không gửi spam.</p>
+    <p class="form-disclaimer">Miễn phí - Tao duyệt tay từng form để đảm bảo chất lượng, link sẽ hạ cánh vào mail mày sau 2-4 tiếng</p>
   </div>
 
   <div class="success-state" id="success-state">
     <div class="s-check"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></div>
-    <h2 class="s-title">Đã bắt được thông tin!</h2>
-    <p class="s-sub">Hệ thống của tao đang ghi nhận Gmail của mày.<br>Tao sẽ cấp quyền và gửi link qua mail sớm nhất.</p>
-    <div class="s-note">Mày nhớ check hộp thư đến (hoặc hòm thư Rác / Spam) nhé.</div>
+    <h2 class="s-title">Đăng ký thành công!</h2>
+    <p class="s-sub">Hệ thống của tao đang ghi nhận Gmail của mày.<br>Để lọc rác, tao làm thủ công nên link truy cập sẽ về mail trong <strong>2-4 tiếng nữa</strong>.</p>
+    <div class="s-note">Trong lúc chờ, nhớ check cả hòm thư Spam đề phòng tao bị lạc. Sau 3-5 ngày dùng thử, tao sẽ nhắn xin feedback.</div>
   </div>
 
   <div class="proof-mini paste-elem">
-    <span class="proof-chip">đang test Beta</span>
-    <span class="proof-chip">Google AI Backend</span>
-    <span class="proof-chip">không phí ẩn</span>
+    <span class="proof-chip">Chỉ 100 slot đầu tiên</span>
+    <span class="proof-chip">Google NotebookLM AI</span>
+    <span class="proof-chip">cập nhật mỗi tuần</span>
   </div>
 
 </div>
@@ -330,7 +337,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* =========================================================
    CẤU HÌNH MAKE.COM WEBHOOK (THAY LINK CỦA MÀY VÀO ĐÂY)
 ========================================================= */
-const WEBHOOK_URL = 'https://hook.eu1.make.com/2og3dyc0024zfq0aqq7qgndc85g77ve3';
+const WEBHOOK_URL = 'https://hook.us1.make.com/XXXXXXXXXX_THAY_CUA_MAY_VAO_DAY';
 
 /* ── HIỆU ỨNG CẮT DÁN SCRAPBOOK ── */
 let delayCounter = 0;
@@ -419,6 +426,22 @@ async function handleSubmit() {
 });
 // Hỗ trợ Enter ở field email để submit nhanh
 document.getElementById('f-email').addEventListener('keydown', e => { if(e.key==='Enter') handleSubmit() });
+
+/* ── XỬ LÝ HAMBURGER MENU MOBILE ── */
+const hamburgerBtn = document.getElementById('hamburger');
+const mobileNavLinks = document.getElementById('nav-links');
+const navItems = document.querySelectorAll('.nav-link');
+
+hamburgerBtn.addEventListener('click', () => {
+  mobileNavLinks.classList.toggle('open');
+});
+
+// Click vào link tự động đóng menu
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    mobileNavLinks.classList.remove('open');
+  });
+});
 </script>
 </body>
 </html>
