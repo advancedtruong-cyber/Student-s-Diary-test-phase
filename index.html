@@ -296,7 +296,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       <div class="field">
         <label for="f-email">Gmail (dùng để cấp quyền truy cập) *</label>
         <input type="email" id="f-email" placeholder="tenmaymay@gmail.com..." autocomplete="email">
-        <span class="field-note">Cần đúng Gmail - tao dùng cái này để add vào notebook</span>
+        <span class="field-note">Chỉ nhận @gmail.com chuẩn. Tao cho alex đứa nào nhập "gmal", "yahoo", ".vn"!</span>
       </div>
       <div class="field">
         <label for="f-year">Mày đang học năm mấy?</label>
@@ -394,7 +394,7 @@ async function handleSubmit() {
       
       // Xóa giá trị sai và chửi thẳng vào mặt bằng placeholder
       document.getElementById('f-email').value = '';
-      document.getElementById('f-email').placeholder = "Từ chối! Chỉ nhận đuôi @gmail.com chuẩn.";
+      document.getElementById('f-email').placeholder = "Alex! Chỉ nhận đuôi @gmail.com chuẩn.";
       valid=false 
   }
 
