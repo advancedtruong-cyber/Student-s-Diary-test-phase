@@ -375,16 +375,26 @@ function loadVideo() {
 /* ── LOGIC XỬ LÝ FORM & BẮN DATA SANG MAKE.COM ── */
 async function handleSubmit() {
   const name  = document.getElementById('f-name').value.trim();
-  const email = document.getElementById('f-email').value.trim();
+  const email = document.getElementById('f-email').value.trim().toLowerCase(); // Ép về chữ thường hết cho dễ check
   const year  = document.getElementById('f-year').value;
   const pain  = document.getElementById('f-pain').value.trim();
 
   let valid = true;
   
-  // Validation đơn giản (Bôi đỏ nếu trống)
+  // 1. Check rỗng tên và nỗi đau
   if (!name)  { document.getElementById('f-name').style.borderColor='#bf2b1a'; valid=false }
-  if (!email || !email.includes('@')) { document.getElementById('f-email').style.borderColor='#bf2b1a'; valid=false }
   if (!pain)  { document.getElementById('f-pain').style.borderColor='#bf2b1a'; valid=false }
+  
+  // 2. Chế độ ĐỘC TÀI: Check email bắt buộc phải là đuôi @gmail.com (Chống typo gmal, gmai, gamil...)
+  if (!email || !email.endsWith('@gmail.com')) { 
+      document.getElementById('f-email').style.borderColor='#bf2b1a'; 
+      
+      // Đổi placeholder để chửi khéo nó gõ sai
+      document.getElementById('f-email').value = '';
+      document.getElementById('f-email').placeholder = "Sai định dạng! Phải là đuôi @gmail.com";
+      valid=false 
+  }
+
   if (!valid) return;
 
   const btn = document.getElementById('submit-btn');
@@ -394,7 +404,7 @@ async function handleSubmit() {
   // Đóng gói Data
   const payload = {
     name: name,
-    email: email,
+    email: email, // Data đẩy đi giờ chắc chắn 100% là đuôi @gmail.com xịn
     year: year || "Chưa khai báo",
     pain: pain,
     source: 'landing_colar_beta',
