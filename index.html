@@ -375,23 +375,26 @@ function loadVideo() {
 /* ── LOGIC XỬ LÝ FORM & BẮN DATA SANG MAKE.COM ── */
 async function handleSubmit() {
   const name  = document.getElementById('f-name').value.trim();
-  const email = document.getElementById('f-email').value.trim().toLowerCase(); // Ép về chữ thường hết cho dễ check
+  const email = document.getElementById('f-email').value.trim().toLowerCase(); // Ép về chữ thường
   const year  = document.getElementById('f-year').value;
   const pain  = document.getElementById('f-pain').value.trim();
 
   let valid = true;
   
-  // 1. Check rỗng tên và nỗi đau
+  // 1. Check rỗng
   if (!name)  { document.getElementById('f-name').style.borderColor='#bf2b1a'; valid=false }
   if (!pain)  { document.getElementById('f-pain').style.borderColor='#bf2b1a'; valid=false }
   
-  // 2. Chế độ ĐỘC TÀI: Check email bắt buộc phải là đuôi @gmail.com (Chống typo gmal, gmai, gamil...)
-  if (!email || !email.endsWith('@gmail.com')) { 
+  // 2. CHẾ ĐỘ ĐỘC TÀI: Block toàn bộ mọi thứ không phải Gmail chuẩn
+  // Giải thích RegEx: Bắt đầu bằng chữ/số/dấu chấm, bắt buộc kết thúc bằng đúng @gmail.com
+  const strictGmailRegex = /^[a-z0-9.]+@gmail\.com$/;
+  
+  if (!email || !strictGmailRegex.test(email)) { 
       document.getElementById('f-email').style.borderColor='#bf2b1a'; 
       
-      // Đổi placeholder để chửi khéo nó gõ sai
+      // Xóa giá trị sai và chửi thẳng vào mặt bằng placeholder
       document.getElementById('f-email').value = '';
-      document.getElementById('f-email').placeholder = "Sai định dạng! Phải là đuôi @gmail.com";
+      document.getElementById('f-email').placeholder = "Từ chối! Chỉ nhận đuôi @gmail.com chuẩn.";
       valid=false 
   }
 
@@ -404,7 +407,7 @@ async function handleSubmit() {
   // Đóng gói Data
   const payload = {
     name: name,
-    email: email, // Data đẩy đi giờ chắc chắn 100% là đuôi @gmail.com xịn
+    email: email, 
     year: year || "Chưa khai báo",
     pain: pain,
     source: 'landing_colar_beta',
@@ -422,7 +425,7 @@ async function handleSubmit() {
     console.log("Webhook CORS block hoặc lỗi mạng, nhưng form vẫn chạy tiếp để bypass UX.");
   }
 
-  // Chuyển giao diện sang Success State (Giao diện thành công)
+  // Chuyển giao diện sang Success State
   document.getElementById('form-wrap').style.display = 'none';
   document.getElementById('success-state').classList.add('show');
   document.getElementById('success-state').scrollIntoView({behavior:'smooth', block:'center'});
