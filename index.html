@@ -662,6 +662,9 @@ function handleLogout() {
 /* ═══════════════════════════════════════════════════════════
    GỬI TIN NHẮN (STREAMING - VƯỢT GIỚI HẠN TIMEOUT)
 ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   GỬI TIN NHẮN (STREAMING - ĐÃ FIX UX BONG BÓNG TRỐNG)
+═══════════════════════════════════════════════════════════ */
 async function sendMessage() {
   if (isWaiting) return;
 
@@ -681,6 +684,9 @@ async function sendMessage() {
   isWaiting = true;
   document.getElementById('chat-send-btn').disabled = true;
 
+  let aiMessageEl = null; // Khai báo biến ở đây để vòng catch có thể dùng để xóa
+  let aiFullText = "";
+
   try {
     const res = await fetch(CHAT_API, {
       method: 'POST',
@@ -695,15 +701,14 @@ async function sendMessage() {
     }
 
     setTyping(false);
-    // Tạo sẵn một bong bóng chat rỗng để bơm chữ từ từ vào
-    const aiMessageEl = appendMessage('ai', '', false);
+    // Tạo sẵn một bong bóng chat rỗng để bơm chữ
+    aiMessageEl = appendMessage('ai', '', false);
     const bubbleEl = aiMessageEl.querySelector('.msg-bubble');
     const container = document.getElementById('chat-messages');
 
     // Hứng Stream
     const reader = res.body.getReader();
     const decoder = new TextDecoder("utf-8");
-    let aiFullText = "";
     let buffer = "";
 
     while (true) {
@@ -722,20 +727,17 @@ async function sendMessage() {
           try {
             const data = JSON.parse(dataStr);
             
-            // AI đang gõ từng chữ
             if (data.event === 'message' || data.event === 'agent_message') {
               aiFullText += data.answer;
               bubbleEl.innerHTML = formatMarkdown(aiFullText);
               container.scrollTo({ top: container.scrollHeight, behavior: 'auto' });
             } 
-            // AI gõ xong
             else if (data.event === 'message_end') {
               if (data.conversation_id) {
                 conversationId = data.conversation_id;
                 localStorage.setItem('colar_conv_id', conversationId);
               }
             } 
-            // Dify báo lỗi
             else if (data.event === 'error') {
                if (data.status === 429) throw new Error('RATE_LIMIT');
                throw new Error('SERVER_ERROR');
@@ -752,6 +754,12 @@ async function sendMessage() {
   } catch (err) {
     console.error('Chat error:', err);
     setTyping(false);
+    
+    // TÍNH NĂNG MỚI: Nếu rớt mạng mà chữ chưa ra được kí tự nào -> Xóa mẹ bong bóng trống đi
+    if (aiMessageEl && aiFullText.length === 0) {
+        aiMessageEl.remove();
+    }
+
     if (err.message === 'RATE_LIMIT') {
        appendMessage('ai', 'Hệ thống đang quá tải (Rate Limit). Mày đợi 10 giây rồi hỏi lại nhé.');
     } else {
