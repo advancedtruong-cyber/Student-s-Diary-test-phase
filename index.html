@@ -706,8 +706,8 @@ async function sendMessage() {
         throw new Error(data.error || `HTTP ${res.status}`);
     }
 
-    if (data.conversationId) {
-      conversationId = data.conversationId;
+if (data.conversation_id) {
+      conversationId = data.conversation_id;
       localStorage.setItem('colar_conv_id', conversationId);
     }
 
