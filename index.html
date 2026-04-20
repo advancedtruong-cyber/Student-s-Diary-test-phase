@@ -531,29 +531,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (savedEmail) {
     conversationId = savedConvId || '';
     
-    // 1. Chuyển khung chat lên ngay dưới thư ngỏ
     const chatEl = document.getElementById('chat-state');
     const founderNote = document.querySelector('.founder-note');
     founderNote.parentNode.insertBefore(chatEl, founderNote.nextSibling);
 
-    // 2. Ẩn rác marketing
     const elementsToHide = ['features', 'how-to', 'demo', 'form-wrap', 'proof-mini', 'beta-bar'];
     elementsToHide.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
 
-    // 3. Xóa các link menu
     document.getElementById('nav-link-1').style.display = 'none';
     document.getElementById('nav-link-2').style.display = 'none';
     document.getElementById('nav-link-3').style.display = 'none';
     const navCta = document.getElementById('nav-cta-btn');
     if (navCta) navCta.style.display = 'none';
 
-    // 4. Hiện chat UI
     showChat(savedEmail, savedName || 'Mày', false);
 
-    // 5. NẾU CÓ SESSION CŨ -> CHỌC API LẤY LỊCH SỬ VỀ
     if (conversationId) {
       await loadHistory(savedEmail, conversationId);
     }
@@ -568,15 +563,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadHistory(email, convId) {
   try {
     const res = await fetch(`${CHAT_API}?userEmail=${encodeURIComponent(email)}&conversationId=${encodeURIComponent(convId)}`);
-    if (!res.ok) return; // Nếu lỗi cứ bỏ qua, cho khách xài chat trống
+    if (!res.ok) return; 
     
     const payload = await res.json();
     
-    // Dify trả về { data: [ {query: "...", answer: "..."}, ... ] }
     if (payload && payload.data && payload.data.length > 0) {
-      document.getElementById('chat-hint').style.display = 'none'; // Ẩn hint
+      document.getElementById('chat-hint').style.display = 'none'; 
       
-      // Data của Dify thường là mới nhất đứng đầu, nên phải đảo ngược lại để render từ trên xuống
       const messages = payload.data.reverse();
       
       messages.forEach(msg => {
@@ -584,7 +577,6 @@ async function loadHistory(email, convId) {
         if (msg.answer) appendMessage('ai', msg.answer, false);
       });
       
-      // Kéo thanh cuộn xuống đáy
       const container = document.getElementById('chat-messages');
       container.scrollTo({ top: container.scrollHeight, behavior: 'auto' });
     }
@@ -668,7 +660,7 @@ function handleLogout() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GỬI TIN NHẮN
+   GỬI TIN NHẮN (STREAMING - VƯỢT GIỚI HẠN TIMEOUT)
 ═══════════════════════════════════════════════════════════ */
 async function sendMessage() {
   if (isWaiting) return;
@@ -693,41 +685,89 @@ async function sendMessage() {
     const res = await fetch(CHAT_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message,
-        userEmail,
-        sessionId: conversationId,
-      })
+      body: JSON.stringify({ message, userEmail, sessionId: conversationId })
     });
 
-    const data = await res.json();
-    
     if (!res.ok) {
-        throw new Error(data.error || `HTTP ${res.status}`);
+        const errorData = await res.json().catch(() => ({}));
+        if (errorData.error === 'rate_limit') throw new Error('RATE_LIMIT');
+        throw new Error('SERVER_ERROR');
     }
 
-if (data.conversation_id) {
-      conversationId = data.conversation_id;
-      localStorage.setItem('colar_conv_id', conversationId);
+    setTyping(false);
+    // Tạo sẵn một bong bóng chat rỗng để bơm chữ từ từ vào
+    const aiMessageEl = appendMessage('ai', '', false);
+    const bubbleEl = aiMessageEl.querySelector('.msg-bubble');
+    const container = document.getElementById('chat-messages');
+
+    // Hứng Stream
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let aiFullText = "";
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const chunks = buffer.split('\n\n');
+      buffer = chunks.pop(); // Giữ lại mẩu JSON chưa hoàn chỉnh
+
+      for (const chunk of chunks) {
+        if (chunk.startsWith('data: ')) {
+          const dataStr = chunk.substring(6);
+          if (dataStr.trim() === '[DONE]') continue;
+
+          try {
+            const data = JSON.parse(dataStr);
+            
+            // AI đang gõ từng chữ
+            if (data.event === 'message' || data.event === 'agent_message') {
+              aiFullText += data.answer;
+              bubbleEl.innerHTML = formatMarkdown(aiFullText);
+              container.scrollTo({ top: container.scrollHeight, behavior: 'auto' });
+            } 
+            // AI gõ xong
+            else if (data.event === 'message_end') {
+              if (data.conversation_id) {
+                conversationId = data.conversation_id;
+                localStorage.setItem('colar_conv_id', conversationId);
+              }
+            } 
+            // Dify báo lỗi
+            else if (data.event === 'error') {
+               if (data.status === 429) throw new Error('RATE_LIMIT');
+               throw new Error('SERVER_ERROR');
+            }
+          } catch (e) {
+            if (e.message === 'RATE_LIMIT' || e.message === 'SERVER_ERROR') throw e;
+          }
+        }
+      }
     }
 
-    appendMessage('ai', data.answer || 'Tao không hiểu ý mày lắm, thử hỏi rõ hơn được không?');
-    if (window.posthog) posthog.capture('colar_message_sent', { hasAnswer: !!data.answer });
+    if (window.posthog) posthog.capture('colar_message_sent', { hasAnswer: true });
 
   } catch (err) {
     console.error('Chat error:', err);
-    appendMessage('ai', 'Hệ thống đang nghẽn hoặc bị lỗi (Rate Limit). Mày đợi tao 10 giây rồi hỏi lại nhé.');
-  } finally {
     setTyping(false);
+    if (err.message === 'RATE_LIMIT') {
+       appendMessage('ai', 'Hệ thống đang quá tải (Rate Limit). Mày đợi 10 giây rồi hỏi lại nhé.');
+    } else {
+       appendMessage('ai', 'Có lỗi kết nối. Mày thử gửi lại xem.');
+    }
+  } finally {
     isWaiting = false;
     document.getElementById('chat-send-btn').disabled = false;
-    input.focus();
+    document.getElementById('chat-input').focus();
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
    HELPERS (RENDER UI)
 ═══════════════════════════════════════════════════════════ */
+// Lưu ý: Hàm này đã được sửa để trả về Element (msgEl)
 function appendMessage(role, text, shouldScroll = true) {
   const container = document.getElementById('chat-messages');
   const typing = document.getElementById('typing-indicator');
@@ -747,6 +787,8 @@ function appendMessage(role, text, shouldScroll = true) {
   if (shouldScroll) {
     container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
   }
+  
+  return msgEl; // Trả về để hứng luồng Stream
 }
 
 function setTyping(show) {
@@ -777,6 +819,7 @@ function autoResize(el) {
 }
 
 function formatMarkdown(text) {
+  if (!text) return "";
   return text
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
