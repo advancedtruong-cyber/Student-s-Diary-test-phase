@@ -410,6 +410,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <p style="font-size:12px;color:var(--dim);text-align:center;margin-top:6px;font-style:italic">Video demo thực tế AI Colar đang trả lời câu hỏi học bổng</p>
   </div>
 
+  <!-- ══ FORM ══ -->
   <div class="form-wrap paste-elem" id="form-wrap">
     <p class="form-title">
       Trở thành 1 trong 100 người đầu tiên dùng Colar - 100% Free
@@ -443,6 +444,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <p class="form-disclaimer">Miễn phí hoàn toàn · Form submit xong → chat mở ngay · tao gửi link backup vào email trong 2-4 tiếng</p>
   </div>
 
+  <!-- ══ CHAT UI ══ -->
   <div class="chat-state" id="chat-state">
     <div class="chat-card">
 
@@ -477,7 +479,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
           </div>
         </div>
 
-      </div><div class="chat-input-area">
+      </div>
+
+      <div class="chat-input-area">
         <textarea
           class="chat-input"
           id="chat-input"
@@ -489,7 +493,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <button class="chat-send-btn" id="chat-send-btn" onclick="sendMessage()">Gửi →</button>
       </div>
 
-    </div><p style="font-size:12px;color:var(--dim);font-style:italic;text-align:center;margin-top:10px;">
+    </div>
+    <p style="font-size:12px;color:var(--dim);font-style:italic;text-align:center;margin-top:10px;">
       * Beta · 200+ học bổng · cập nhật hàng tuần · <a href="mailto:truong@studentsdiary.vn" style="color:var(--dim);">báo lỗi cho tao</a>
     </p>
   </div>
@@ -500,12 +505,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <span class="proof-chip">cập nhật mỗi tuần</span>
   </div>
 
-</div><script>
+</div><!-- /page -->
+
+<script>
 /* ═══════════════════════════════════════════════════════════
    CONFIG
 ═══════════════════════════════════════════════════════════ */
 const WEBHOOK_URL = 'https://hook.eu1.make.com/2og3dyc0024zfq0aqq7qgndc85g77ve3';
-const CHAT_API    = '/api/chat'; // Vercel serverless function
+const CHAT_API    = '/api/chat'; // Gọi vào Vercel API
 
 /* ═══════════════════════════════════════════════════════════
    STATE
@@ -514,44 +521,77 @@ let conversationId = '';
 let isWaiting = false;   
 
 /* ═══════════════════════════════════════════════════════════
-   KHỞI TẠO — Check localStorage khi load trang
+   KHỞI TẠO — Lấy LocalStorage & Tải lịch sử
 ═══════════════════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const savedEmail = localStorage.getItem('colar_email');
   const savedName  = localStorage.getItem('colar_name');
   const savedConvId = localStorage.getItem('colar_conv_id');
 
   if (savedEmail) {
-    // APP MODE: Đã có session -> Nhấc khung chat lên, dọn dẹp web
     conversationId = savedConvId || '';
     
-    // 1. Chuyển khung chat lên ngay dưới thư ngỏ (Founder note)
+    // 1. Chuyển khung chat lên ngay dưới thư ngỏ
     const chatEl = document.getElementById('chat-state');
     const founderNote = document.querySelector('.founder-note');
     founderNote.parentNode.insertBefore(chatEl, founderNote.nextSibling);
 
-    // 2. Xóa các mảng khối marketing
+    // 2. Ẩn rác marketing
     const elementsToHide = ['features', 'how-to', 'demo', 'form-wrap', 'proof-mini', 'beta-bar'];
     elementsToHide.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
 
-    // 3. Xóa các link thừa trên thanh menu Nav
+    // 3. Xóa các link menu
     document.getElementById('nav-link-1').style.display = 'none';
     document.getElementById('nav-link-2').style.display = 'none';
     document.getElementById('nav-link-3').style.display = 'none';
-    
     const navCta = document.getElementById('nav-cta-btn');
     if (navCta) navCta.style.display = 'none';
 
-    // 4. Mở khung chat (cờ false để không bị nhảy trang)
+    // 4. Hiện chat UI
     showChat(savedEmail, savedName || 'Mày', false);
+
+    // 5. NẾU CÓ SESSION CŨ -> CHỌC API LẤY LỊCH SỬ VỀ
+    if (conversationId) {
+      await loadHistory(savedEmail, conversationId);
+    }
   }
 
-  // Animations
   initAnimations();
 });
+
+/* ═══════════════════════════════════════════════════════════
+   HÀM TẢI LỊCH SỬ TỪ BACKEND
+═══════════════════════════════════════════════════════════ */
+async function loadHistory(email, convId) {
+  try {
+    const res = await fetch(`${CHAT_API}?userEmail=${encodeURIComponent(email)}&conversationId=${encodeURIComponent(convId)}`);
+    if (!res.ok) return; // Nếu lỗi cứ bỏ qua, cho khách xài chat trống
+    
+    const payload = await res.json();
+    
+    // Dify trả về { data: [ {query: "...", answer: "..."}, ... ] }
+    if (payload && payload.data && payload.data.length > 0) {
+      document.getElementById('chat-hint').style.display = 'none'; // Ẩn hint
+      
+      // Data của Dify thường là mới nhất đứng đầu, nên phải đảo ngược lại để render từ trên xuống
+      const messages = payload.data.reverse();
+      
+      messages.forEach(msg => {
+        if (msg.query) appendMessage('user', msg.query, false);
+        if (msg.answer) appendMessage('ai', msg.answer, false);
+      });
+      
+      // Kéo thanh cuộn xuống đáy
+      const container = document.getElementById('chat-messages');
+      container.scrollTo({ top: container.scrollHeight, behavior: 'auto' });
+    }
+  } catch (error) {
+    console.error("Lỗi kéo lịch sử:", error);
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════
    FORM SUBMIT
@@ -578,11 +618,9 @@ async function handleSubmit() {
   const btn = document.getElementById('submit-btn');
   btn.textContent = 'Đang xử lý...'; btn.disabled = true;
 
-  // 1. Lưu localStorage 
   localStorage.setItem('colar_email', email);
   localStorage.setItem('colar_name', name);
 
-  // 2. Bắn webhook sang Make.com 
   fetch(WEBHOOK_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -593,14 +631,13 @@ async function handleSubmit() {
     })
   }).catch(() => {}); 
 
-  // 3. Hiện chat (cờ true để tự động cuộn trang xuống cho mượt)
   showChat(email, name, true);
 
   if (window.posthog) posthog.capture('colar_form_submitted', { email, year });
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SHOW / HIDE CHAT
+   SHOW CHAT UI
 ═══════════════════════════════════════════════════════════ */
 function showChat(email, name, shouldScroll = true) {
   document.getElementById('form-wrap').style.display = 'none';
@@ -631,7 +668,7 @@ function handleLogout() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SEND MESSAGE (Gọi Vercel Serverless)
+   GỬI TIN NHẮN
 ═══════════════════════════════════════════════════════════ */
 async function sendMessage() {
   if (isWaiting) return;
@@ -679,7 +716,6 @@ async function sendMessage() {
 
   } catch (err) {
     console.error('Chat error:', err);
-    // Nếu lỗi do rate limit hoặc chết server
     appendMessage('ai', 'Hệ thống đang nghẽn hoặc bị lỗi (Rate Limit). Mày đợi tao 10 giây rồi hỏi lại nhé.');
   } finally {
     setTyping(false);
@@ -690,9 +726,9 @@ async function sendMessage() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   HELPERS
+   HELPERS (RENDER UI)
 ═══════════════════════════════════════════════════════════ */
-function appendMessage(role, text) {
+function appendMessage(role, text, shouldScroll = true) {
   const container = document.getElementById('chat-messages');
   const typing = document.getElementById('typing-indicator');
 
@@ -708,7 +744,9 @@ function appendMessage(role, text) {
   }
 
   container.insertBefore(msgEl, typing);
-  container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+  if (shouldScroll) {
+    container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+  }
 }
 
 function setTyping(show) {
@@ -756,7 +794,7 @@ function escapeHtml(text) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SCRAPBOOK ANIMATIONS
+   SCRAPBOOK ANIMATIONS & UI TRICKS
 ═══════════════════════════════════════════════════════════ */
 function initAnimations() {
   let delayCounter = 0;
@@ -783,9 +821,6 @@ function initAnimations() {
   });
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CLEAR ERRORS
-═══════════════════════════════════════════════════════════ */
 ['f-name','f-email','f-pain'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', function(){ this.style.borderColor=''; });
@@ -794,9 +829,6 @@ document.getElementById('f-email').addEventListener('keydown', e => {
   if (e.key === 'Enter') handleSubmit();
 });
 
-/* ═══════════════════════════════════════════════════════════
-   HAMBURGER MENU
-═══════════════════════════════════════════════════════════ */
 const hamburgerBtn = document.getElementById('hamburger');
 const mobileNavLinks = document.getElementById('nav-links');
 hamburgerBtn.addEventListener('click', () => mobileNavLinks.classList.toggle('open'));
