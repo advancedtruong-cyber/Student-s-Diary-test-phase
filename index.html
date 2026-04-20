@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student's Diary</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='50' font-family='Mali, cursive' font-size='55' font-weight='900' fill='%2318140f' text-anchor='middle' dominant-baseline='central'>SD</text></svg>"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='50' font-family='Mali, cursive' font-size='55' font-weight='900' fill='%2318140f' text-anchor='middle' dominant-baseline='central'>SD</text></svg>">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -17,21 +18,21 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:var(--f);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.65;overflow-x:hidden}
-/* Noise Texture Background */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E")}
 .page{max-width:620px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1}
 
 /* NAV */
 .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;position:sticky;top:0;background:var(--paper);padding:24px 0 16px;z-index:100;border-bottom:1.5px dashed var(--border)}
-.brand{font-weight:800;font-size:22px;color:var(--ink);text-decoration:none;opacity:.9; letter-spacing:-0.5px;}
+.brand{font-weight:800;font-size:22px;color:var(--ink);text-decoration:none;opacity:.9;letter-spacing:-0.5px;}
 .nav-menu{display:flex;gap:20px;align-items:center;}
 .nav-links{display:flex;gap:16px;}
 .nav-link{font-size:14px;font-weight:600;color:var(--ink2);text-decoration:none;transition:color .2s;}
 .nav-link:hover{color:var(--red);}
 .nav-cta{font-family:var(--f);font-size:14px;font-weight:700;background:var(--ink);color:var(--paper);text-decoration:none;padding:8px 16px;border-radius:3px;transform:rotate(1.5deg);transition:transform .15s,box-shadow .15s;border:1.5px solid var(--ink);box-shadow:3px 3px 0 rgba(24,20,15,.2)}
 .nav-cta:hover{transform:translateY(-2px) rotate(1.5deg);box-shadow:4px 5px 0 rgba(24,20,15,.3)}
-.nav-cta:active{transform:translateY(0) rotate(1.5deg);box-shadow:1px 1px 0 rgba(24,20,15,.2)}
+.hamburger{display:none;background:none;border:none;color:var(--ink);cursor:pointer;padding:4px;margin-left:8px;}
+.hamburger svg{width:28px;height:28px;}
 
 /* BETA BAR */
 .beta-bar{display:inline-flex;align-items:center;gap:8px;background:var(--paper2);border:1.5px dashed rgba(24,20,15,.2);border-radius:3px;padding:6px 16px;margin-bottom:28px;transform:rotate(-.4deg)}
@@ -39,18 +40,15 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 .beta-text{font-size:13px;font-weight:600;color:var(--dim)}
 
-/* HERO & SKETCH EFFECTS */
+/* HERO */
 .headline{font-size:clamp(34px,6.5vw,50px);font-weight:700;line-height:1.1;letter-spacing:-.4px;margin-bottom:18px}
 .sketch-circle{position:relative;display:inline-block;white-space:nowrap;z-index:1}
 .sketch-circle::before{content:'';position:absolute;top:-10%;left:-6%;width:112%;height:120%;border:2.5px solid var(--red);border-radius:70% 30% 60% 40% / 40% 60% 30% 70%;transform:rotate(-2deg);z-index:-1;opacity:1}
 .sketch-underline{position:relative;display:inline-block;z-index:1}
 .sketch-underline::after{content:'';position:absolute;bottom:-2px;left:-4px;right:-4px;height:3px;background:var(--red);transform:rotate(-1.5deg);border-radius:2px;z-index:-1;opacity:1}
-
-/* DOODLES (SVG Icons) */
 .doodle-arrow{position:absolute;right:16px;top:-34px;width:38px;stroke:var(--red);fill:none;stroke-width:2.5px;stroke-linecap:round;stroke-linejoin:round;transform:rotate(10deg);opacity:0.9}
 .doodle-plane{position:absolute;left:-40px;top:-12px;width:30px;stroke:var(--red);fill:none;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round;transform:rotate(-15deg);opacity:0.9}
 .doodle-swirl{display:block;width:90px;stroke:var(--red);fill:none;stroke-width:2px;stroke-linecap:round;stroke-dasharray:5 7;margin:12px 0 0 -8px;opacity:0.8}
-
 .subhead{font-size:17px;color:var(--ink2);line-height:1.7;margin-bottom:22px;max-width:520px}
 .subhead strong{font-weight:600;color:var(--ink)}
 
@@ -62,44 +60,21 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .note-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
 .note-text{font-size:14px;color:var(--ink2);line-height:1.6}
 
-/* FEATURES LIST */
+/* FEATURES */
 .what-list{list-style:none;margin:0 0 28px;display:flex;flex-direction:column;gap:10px;}
 .what-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:var(--ink2);line-height:1.55;padding:12px 14px;background:white;border:1px solid var(--border);border-radius:3px}
 .check-icon{width:24px;height:24px;flex-shrink:0;background:var(--ink);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .check-icon svg{width:13px;height:13px;fill:none;stroke:var(--paper);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* ── DEMO / VIDEO SECTION ── */
-.demo-section{margin:36px 0; scroll-margin-top: 100px;}
+/* DEMO SECTION */
+.demo-section{margin:36px 0;scroll-margin-top:100px;}
 .demo-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:block}
 .demo-title{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.25}
-
-.video-wrap{
-  position:relative;width:100%;padding-top:56.25%; /* 16:9 Aspect Ratio */
-  border:2px solid var(--ink);border-radius:4px;overflow:hidden;
-  background:#000;transform:rotate(-.3deg);
-  box-shadow:4px 4px 0 rgba(24,20,15,.15);
-  margin-bottom:8px;
-}
+.video-wrap{position:relative;width:100%;padding-top:56.25%;border:2px solid var(--ink);border-radius:4px;overflow:hidden;background:#000;transform:rotate(-.3deg);box-shadow:4px 4px 0 rgba(24,20,15,.15);margin-bottom:8px;}
 .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 
-.video-placeholder{
-  position:absolute;inset:0;
-  background:var(--paper2);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  cursor:pointer;
-}
-.play-btn{width:60px;height:60px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;transition:transform .15s}
-.play-btn svg{width:24px;height:24px;fill:var(--paper);margin-left:3px}
-.video-wrap:hover .play-btn{transform:scale(1.08)}
-.placeholder-text{font-size:15px;font-weight:600;color:var(--ink2);text-align:center;padding:0 20px}
-.placeholder-sub{font-size:13px;color:var(--dim);text-align:center}
-
-/* HAMBURGER MENU */
-.hamburger { display: none; background: none; border: none; color: var(--ink); cursor: pointer; padding: 4px; margin-left: 8px;}
-.hamburger svg { width: 28px; height: 28px; }
-
 /* HOW IT WORKS */
-.how-section{background:var(--paper2);border-radius:6px;padding:24px 22px;margin:32px 0;border:1px solid var(--border); scroll-margin-top: 100px;}
+.how-section{background:var(--paper2);border-radius:6px;padding:24px 22px;margin:32px 0;border:1px solid var(--border);scroll-margin-top:100px;}
 .how-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:block}
 .how-title{position:relative;font-size:22px;font-weight:700;margin-bottom:20px;line-height:1.25;color:var(--ink)}
 .steps{display:flex;flex-direction:column;gap:0}
@@ -110,7 +85,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .step-body p{font-size:14px;color:var(--ink2);line-height:1.55}
 
 /* FORM */
-.form-wrap{background:white;border:2px solid var(--ink);border-radius:4px;padding:28px 24px 24px;position:relative;margin-bottom:16px; scroll-margin-top: 100px;}
+.form-wrap{background:white;border:2px solid var(--ink);border-radius:4px;padding:28px 24px 24px;position:relative;margin-bottom:16px;scroll-margin-top:100px;}
 .form-wrap::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:56px;height:20px;background:var(--tape);border-radius:2px}
 .form-title{position:relative;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px;line-height:1.35;padding-right:24px;}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
@@ -127,61 +102,225 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .submit-btn:disabled{opacity:.55;pointer-events:none}
 .form-disclaimer{font-size:12px;color:var(--dim);text-align:center;margin-top:12px;font-style:italic;line-height:1.6}
 
-/* SUCCESS STATE */
-.success-state{display:none;background:white;border:2px solid var(--ink);border-radius:4px;padding:36px 24px;text-align:center; scroll-margin-top: 100px;}
-.success-state.show{display:block;animation:fadeIn 0.4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.s-check{width:52px;height:52px;border-radius:50%;background:var(--ink);margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
-.s-check svg{width:24px;height:24px;fill:none;stroke:var(--paper);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.s-title{font-size:22px;font-weight:700;margin-bottom:8px}
-.s-sub{font-size:15px;color:var(--ink2);line-height:1.65;margin-bottom:16px}
-.s-note{font-size:13px;color:var(--dim);font-style:italic;padding:12px 16px;background:var(--paper2);border-radius:3px;line-height:1.6}
-
-/* PROOF CHIPS */
+/* PROOF */
 .proof-mini{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
 .proof-chip{font-size:12px;font-weight:500;color:var(--dim);border:1px dashed rgba(24,20,15,.2);padding:4px 12px;border-radius:2px;background:var(--paper2)}
 
-/* ── SCRAPBOOK PASTE ANIMATION ── */
-.paste-elem {
-  opacity: 0;
-  transform: scale(1.08) rotate(var(--start-rot, 0deg));
-  filter: drop-shadow(0 12px 16px rgba(24,20,15,0.12));
-  transition: 
-    opacity 0.4s ease-out,
-    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    filter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* SCRAPBOOK ANIMATION */
+.paste-elem{opacity:0;transform:scale(1.08) rotate(var(--start-rot, 0deg));filter:drop-shadow(0 12px 16px rgba(24,20,15,0.12));transition:opacity 0.4s ease-out,transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),filter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);}
+.paste-elem.in{opacity:1;transform:scale(1) rotate(var(--end-rot, 0deg));filter:drop-shadow(0 2px 3px rgba(24,20,15,0.04));}
+
+/* ══════════════════════════════════════════════════
+   CHAT UI — scrapbook style
+══════════════════════════════════════════════════ */
+.chat-state{
+  display:none;
+  margin-bottom:16px;
+  scroll-margin-top:100px;
+  animation:fadeSlideIn 0.4s ease;
 }
-.paste-elem.in {
-  opacity: 1;
-  transform: scale(1) rotate(var(--end-rot, 0deg));
-  filter: drop-shadow(0 2px 3px rgba(24,20,15,0.04));
+.chat-state.show{display:block;}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Card bọc ngoài — tape + border */
+.chat-card{
+  position:relative;
+  background:white;
+  border:2px solid var(--ink);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:4px 4px 0 rgba(24,20,15,.12);
+  transform:rotate(-0.2deg);
+}
+.chat-card::before{
+  content:'';position:absolute;
+  top:-12px;left:50%;transform:translateX(-50%);
+  width:56px;height:20px;
+  background:var(--tape);border-radius:2px;z-index:2;
 }
 
+/* Header */
+.chat-header{
+  background:var(--ink);
+  padding:10px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.chat-header-icon svg{width:16px;height:16px;fill:none;stroke:var(--paper);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.chat-header-title{
+  font-size:14px;font-weight:700;
+  color:var(--paper);flex:1;
+}
+.chat-header-user{
+  font-size:11px;color:rgba(253,249,240,.5);
+  max-width:140px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
+}
+/* Nút đổi tài khoản */
+.chat-logout-btn{
+  font-family:var(--f);
+  font-size:11px;color:rgba(253,249,240,.4);
+  background:none;border:none;cursor:pointer;
+  padding:2px 6px;border-radius:2px;
+  transition:color .15s,background .15s;
+  white-space:nowrap;
+}
+.chat-logout-btn:hover{color:rgba(253,249,240,.8);background:rgba(253,249,240,.08);}
+
+/* Messages area */
+.chat-messages{
+  height:380px;
+  overflow-y:auto;
+  padding:16px 14px;
+  display:flex;flex-direction:column;gap:12px;
+  background:var(--paper);
+  scroll-behavior:smooth;
+}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-track{background:transparent;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(24,20,15,.15);border-radius:2px;}
+
+/* Message bubbles */
+.msg{display:flex;gap:8px;align-items:flex-end;max-width:88%;}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg.ai{align-self:flex-start;}
+
+.msg-bubble{
+  padding:10px 14px;
+  border-radius:4px;
+  font-size:14px;line-height:1.6;
+  word-break:break-word;
+}
+.msg.user .msg-bubble{
+  background:var(--ink);
+  color:var(--paper);
+  border:1.5px solid var(--ink);
+  transform:rotate(0.3deg);
+}
+.msg.ai .msg-bubble{
+  background:white;
+  color:var(--ink2);
+  border:1.5px solid var(--border);
+  transform:rotate(-0.2deg);
+  box-shadow:2px 2px 0 rgba(24,20,15,.06);
+}
+
+/* Avatar nhỏ bên cạnh bubble AI */
+.msg-avatar{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--paper2);border:1.5px solid var(--ink);
+  flex-shrink:0;overflow:hidden;
+}
+.msg-avatar img{width:100%;height:100%;object-fit:cover;}
+
+/* Typing indicator */
+.typing-indicator{
+  display:none;
+  align-self:flex-start;
+}
+.typing-indicator.show{display:flex;}
+.typing-bubble{
+  background:white;
+  border:1.5px solid var(--border);
+  border-radius:4px;
+  padding:10px 16px;
+  display:flex;align-items:center;gap:5px;
+  transform:rotate(-0.2deg);
+  box-shadow:2px 2px 0 rgba(24,20,15,.06);
+}
+.typing-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--dim);
+  animation:typingBounce 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(1){animation-delay:0s;}
+.typing-dot:nth-child(2){animation-delay:0.15s;}
+.typing-dot:nth-child(3){animation-delay:0.3s;}
+@keyframes typingBounce{
+  0%,60%,100%{transform:translateY(0);}
+  30%{transform:translateY(-6px);}
+}
+
+/* Empty state hint */
+.chat-hint{
+  text-align:center;padding:24px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.chat-hint-icon{font-size:28px;}
+.chat-hint-text{font-size:14px;color:var(--dim);line-height:1.6;}
+.hint-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:4px;}
+.hint-chip{
+  font-size:12px;color:var(--ink2);
+  border:1px dashed var(--border);
+  padding:4px 10px;border-radius:2px;
+  background:var(--paper2);cursor:pointer;
+  transition:background .15s,border-color .15s;
+  text-align:left;
+}
+.hint-chip:hover{background:white;border-color:var(--ink);}
+
+/* Input area */
+.chat-input-area{
+  padding:10px 12px;
+  border-top:1.5px dashed var(--border);
+  background:var(--paper);
+  display:flex;gap:8px;align-items:flex-end;
+}
+.chat-input{
+  font-family:var(--f);font-size:14px;
+  flex:1;padding:9px 12px;
+  border:1.5px solid rgba(24,20,15,.18);
+  border-radius:3px;
+  background:white;color:var(--ink);
+  outline:none;resize:none;
+  min-height:40px;max-height:100px;
+  line-height:1.5;
+  transition:border-color .15s,box-shadow .15s;
+  overflow-y:auto;
+}
+.chat-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(24,20,15,.06);}
+.chat-input::placeholder{color:var(--dim);opacity:.55;}
+.chat-send-btn{
+  font-family:var(--f);font-size:13px;font-weight:700;
+  padding:9px 14px;
+  background:var(--ink);color:var(--paper);
+  border:none;border-radius:3px;cursor:pointer;
+  transition:transform .1s,box-shadow .1s,opacity .15s;
+  white-space:nowrap;flex-shrink:0;
+  align-self:flex-end;
+  min-height:40px;
+}
+.chat-send-btn:hover{transform:translateY(-1px);box-shadow:0 3px 0 rgba(24,20,15,.2);}
+.chat-send-btn:active{transform:translateY(0);}
+.chat-send-btn:disabled{opacity:.4;pointer-events:none;}
+
+/* Markdown-like formatting trong AI response */
+.msg.ai .msg-bubble strong{font-weight:700;color:var(--ink);}
+.msg.ai .msg-bubble em{font-style:italic;}
+.msg.ai .msg-bubble a{color:var(--red);text-underline-offset:2px;}
+.msg.ai .msg-bubble ul{padding-left:16px;margin:4px 0;}
+.msg.ai .msg-bubble li{margin-bottom:2px;}
+.msg.ai .msg-bubble p{margin-bottom:6px;}
+.msg.ai .msg-bubble p:last-child{margin-bottom:0;}
+
+/* ── RESPONSIVE ── */
 @media(max-width:480px){
   .page{padding:0 18px 60px}
   .headline{font-size:32px}
-  .brand{font-size: 18px;}
-  .nav-cta { padding: 6px 12px; font-size: 13px; }
-  .hamburger { display: flex; z-index: 102; position: relative;}
-  .nav-links {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background: var(--paper); flex-direction: column; justify-content: center;
-    align-items: center; gap: 32px; z-index: 101;
-    transform: translateY(-100%); transition: transform 0.3s ease-in-out;
-    display: flex;
-  }
-  .nav-links.open { transform: translateY(0); }
-  .nav-link { font-size: 22px; }
+  .brand{font-size:18px;}
+  .nav-cta{padding:6px 12px;font-size:13px;}
+  .hamburger{display:flex;z-index:102;position:relative;}
+  .nav-links{position:fixed;top:0;left:0;width:100%;height:100vh;background:var(--paper);flex-direction:column;justify-content:center;align-items:center;gap:32px;z-index:101;transform:translateY(-100%);transition:transform 0.3s ease-in-out;display:flex;}
+  .nav-links.open{transform:translateY(0);}
+  .nav-link{font-size:22px;}
   .doodle-plane{display:none;}
+  .chat-messages{height:320px;}
+  .hint-chips{display:none;} 
 }
 </style>
+
 <script>
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Ir init Br Zr Ci jr $r Lr capture calculateEventProperties Yr register register_once register_for_session unregister unregister_for_session Jr getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync Kr identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty Wr zr createPersonProfile setInternalOrTestUser Xr Or en opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Vr debug ki Gr getPageViewId captureTraceFeedback captureTraceMetric Nr".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-    posthog.init('phc_taT7ZjM8rkc6ejhgn2zkgGBghEbVfftStUcesY78xcKX', {
-        api_host: 'https://us.i.posthog.com',
-        defaults: '2026-01-30',
-        person_profiles: 'always', // or 'always' to create profiles for anonymous users as well
-    })
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Ir init Br Zr Ci jr $r Lr capture calculateEventProperties Yr register register_once register_for_session unregister unregister_for_session Jr getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync Kr identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty Wr zr createPersonProfile setInternalOrTestUser Xr Or en opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Vr debug ki Gr getPageViewId captureTraceFeedback captureTraceMetric Nr".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_taT7ZjM8rkc6ejhgn2zkgGBghEbVfftStUcesY78xcKX',{api_host:'https://us.i.posthog.com',defaults:'2026-01-30',person_profiles:'always'})
 </script>
 </head>
 <body>
@@ -191,18 +330,18 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <a class="brand" href="/">Student's Diary</a>
     <div class="nav-menu">
       <div class="nav-links" id="nav-links">
-        <a href="#features" class="nav-link">Lợi ích</a>
-        <a href="#how-to" class="nav-link">Cách dùng</a>
-        <a href="#demo" class="nav-link">Demo</a>
+        <a href="#features" class="nav-link" id="nav-link-1">Lợi ích</a>
+        <a href="#how-to" class="nav-link" id="nav-link-2">Cách dùng</a>
+        <a href="#demo" class="nav-link" id="nav-link-3">Demo</a>
       </div>
-      <a href="#form-wrap" class="nav-cta">Đăng ký ngay →</a>
+      <a href="#form-wrap" class="nav-cta" id="nav-cta-btn">Đăng ký ngay →</a>
       <button class="hamburger" id="hamburger" aria-label="Mở menu">
         <svg viewBox="0 0 24 24"><path d="M4 12h16M4 6h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
     </div>
   </nav>
 
-  <div class="beta-bar paste-elem">
+  <div class="beta-bar paste-elem" id="beta-bar">
     <div class="beta-dot"></div>
     <span class="beta-text">Bản Beta - Giới hạn 100 người dùng đầu tiên</span>
   </div>
@@ -210,7 +349,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <h1 class="headline paste-elem">
     Dẹp 100 cái tab đi.<br>
     Kiếm học bổng giờ nhàn như <span class="sketch-underline">lướt tóp tóp</span>.
-    <svg class="doodle-swirl" viewBox="0 0 100 50"><path d="M5 25 Q 30 -10 60 25 T 95 25" /></svg>
+    <svg class="doodle-swirl" viewBox="0 0 100 50"><path d="M5 25 Q 30 -10 60 25 T 95 25"/></svg>
   </h1>
 
   <p class="subhead paste-elem">
@@ -229,9 +368,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
   </div>
 
-  <div id="features" style="scroll-margin-top: 100px; padding-top: 16px;">
+  <div id="features" style="scroll-margin-top:100px;padding-top:16px;">
     <span class="demo-label paste-elem">giá trị cốt lõi</span>
-    <h2 class="demo-title paste-elem" style="margin-bottom: 20px;">Tao làm được gì cho mày?</h2>
+    <h2 class="demo-title paste-elem" style="margin-bottom:20px;">Tao làm được gì cho mày?</h2>
     <ul class="what-list">
       <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>Hỏi AI trực tiếp</strong> - ngành nào, GPA bao nhiêu, muốn đi đâu - ra danh sách phù hợp ngay</span></li>
       <li class="paste-elem"><div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5.5,10.5 12,3.5"/></svg></div><span><strong>200+ học bổng</strong> đã làm sạch: deadline, điều kiện, link apply đầy đủ</span></li>
@@ -249,24 +388,15 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="steps">
       <div class="step-item paste-elem">
         <div class="step-num">01</div>
-        <div class="step-body">
-          <h3>Để lại tên + Gmail</h3>
-          <p>Tao duyệt tay từng người để chống spam, sau đó add thẳng Gmail của mày vào hệ thống AI. Quyền riêng tư 100%.</p>
-        </div>
+        <div class="step-body"><h3>Điền form ngay bên dưới</h3><p>Tên, Gmail, và mày đang gặp khó khăn gì — form submit xong là khung chat Colar hiện ra luôn.</p></div>
       </div>
       <div class="step-item paste-elem">
         <div class="step-num">02</div>
-        <div class="step-body">
-          <h3>Mở link, hỏi AI bất kỳ thứ gì</h3>
-          <p>"Học bổng Hàn Quốc nào phù hợp ngành Kinh tế GPA 3.2?" → Colar trả lời từ database, không vòng vo.</p>
-        </div>
+        <div class="step-body"><h3>Hỏi AI bất kỳ thứ gì về học bổng</h3><p>"Học bổng Hàn Quốc nào phù hợp ngành Kinh tế GPA 3.2?" → Colar trả lời từ database 200+ học bổng, không vòng vo.</p></div>
       </div>
       <div class="step-item paste-elem">
         <div class="step-num">03</div>
-        <div class="step-body">
-          <h3>Nhận cập nhật hàng tuần</h3>
-          <p>Mỗi tuần tao thêm học bổng mới vào database. Mày nhận email tóm tắt, không cần tự theo dõi.</p>
-        </div>
+        <div class="step-body"><h3>Nhận cập nhật hàng tuần</h3><p>Mỗi tuần tao thêm học bổng mới. Mày nhận email tóm tắt, không cần tự theo dõi.</p></div>
       </div>
     </div>
   </div>
@@ -274,15 +404,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <div class="demo-section paste-elem" id="demo">
     <span class="demo-label">xem trước khi dùng</span>
     <h2 class="demo-title">Colar hoạt động như thế nào?</h2>
-
-    <div class="video-wrap" id="video-wrap">
+    <div class="video-wrap">
       <iframe src="https://www.youtube.com/embed/WiHSQEvlr4A?rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
-    
-    <p style="font-size:12px;color:var(--dim);text-align:center;margin-top:6px;font-style:italic">
-      Video demo thực tế notebook AI Colar đang trả lời câu hỏi học bổng
-    </p>
-</div>
+    <p style="font-size:12px;color:var(--dim);text-align:center;margin-top:6px;font-style:italic">Video demo thực tế AI Colar đang trả lời câu hỏi học bổng</p>
+  </div>
+
   <div class="form-wrap paste-elem" id="form-wrap">
     <p class="form-title">
       Trở thành 1 trong 100 người đầu tiên dùng Colar - 100% Free
@@ -311,147 +438,370 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <textarea id="f-pain" placeholder="Ví dụ: không biết bắt đầu từ đâu, không biết học bổng nào phù hợp GPA của mình..." rows="3"></textarea>
         <span class="field-note">Câu này giúp tao cải thiện Colar - quan trọng nhất trong form này</span>
       </div>
-      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Giữ 1 slot cho tao →</button>
+      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Giữ 1 slot và bắt đầu chat →</button>
     </div>
-    <p class="form-disclaimer">Miễn phí - Tao duyệt tay từng form để đảm bảo chất lượng, link sẽ hạ cánh vào mail mày sau 2-4 tiếng</p>
+    <p class="form-disclaimer">Miễn phí hoàn toàn · Form submit xong → chat mở ngay · tao gửi link backup vào email trong 2-4 tiếng</p>
   </div>
 
-  <div class="success-state" id="success-state">
-    <div class="s-check"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></div>
-    <h2 class="s-title">Đăng ký thành công!</h2>
-    <p class="s-sub">Hệ thống của tao đang ghi nhận Gmail của mày.<br>Để lọc rác, tao làm thủ công nên link truy cập sẽ về mail trong <strong>2-4 tiếng nữa</strong>.</p>
-    <div class="s-note">Trong lúc chờ, nhớ check cả hòm thư Spam đề phòng tao bị lạc. Sau 3-5 ngày dùng thử, tao sẽ nhắn xin feedback.</div>
+  <div class="chat-state" id="chat-state">
+    <div class="chat-card">
+
+      <div class="chat-header">
+        <div class="chat-header-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 5v5l3.5 2" stroke="var(--paper)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <span class="chat-header-title">Colar · AI tra cứu học bổng</span>
+        <span class="chat-header-user" id="chat-header-user"></span>
+        <button class="chat-logout-btn" onclick="handleLogout()" title="Đăng ký bằng email khác">↩ đổi tài khoản</button>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+
+        <div class="chat-hint" id="chat-hint">
+          <div class="chat-hint-icon">📓</div>
+          <p class="chat-hint-text">Hỏi tao bất cứ thứ gì về học bổng.<br>Cụ thể càng tốt — kết quả càng chính xác.</p>
+          <div class="hint-chips">
+            <button class="hint-chip" onclick="sendHint(this)">Học bổng Hàn Quốc không cần IELTS?</button>
+            <button class="hint-chip" onclick="sendHint(this)">MEXT Embassy Track cần chuẩn bị gì?</button>
+            <button class="hint-chip" onclick="sendHint(this)">Học bổng toàn phần ngành Kinh tế ở Châu Âu?</button>
+            <button class="hint-chip" onclick="sendHint(this)">GPA 3.2 có xin được học bổng KAIST không?</button>
+          </div>
+        </div>
+
+        <div class="typing-indicator" id="typing-indicator">
+          <div class="msg-avatar"><img src="./avatar.png" alt="Colar"></div>
+          <div class="typing-bubble">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+
+      </div><div class="chat-input-area">
+        <textarea
+          class="chat-input"
+          id="chat-input"
+          placeholder="Hỏi Colar về học bổng..."
+          rows="1"
+          onkeydown="handleInputKeydown(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="chat-send-btn" id="chat-send-btn" onclick="sendMessage()">Gửi →</button>
+      </div>
+
+    </div><p style="font-size:12px;color:var(--dim);font-style:italic;text-align:center;margin-top:10px;">
+      * Beta · 200+ học bổng · cập nhật hàng tuần · <a href="mailto:truong@studentsdiary.vn" style="color:var(--dim);">báo lỗi cho tao</a>
+    </p>
   </div>
 
-  <div class="proof-mini paste-elem">
+  <div class="proof-mini paste-elem" id="proof-mini">
     <span class="proof-chip">Chỉ 100 slot đầu tiên</span>
     <span class="proof-chip">FREE 100%</span>
     <span class="proof-chip">cập nhật mỗi tuần</span>
   </div>
 
-</div>
-
-<script>
-/* =========================================================
-   CẤU HÌNH MAKE.COM WEBHOOK
-========================================================= */
+</div><script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════════════════════ */
 const WEBHOOK_URL = 'https://hook.eu1.make.com/2og3dyc0024zfq0aqq7qgndc85g77ve3';
+const CHAT_API    = '/api/chat'; // Vercel serverless function
 
-/* ── HIỆU ỨNG CẮT DÁN SCRAPBOOK ── */
-let delayCounter = 0;
-let resetTimer = null;
+/* ═══════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════ */
+let conversationId = ''; 
+let isWaiting = false;   
 
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { 
-    if(e.isIntersecting){
-      // Tính toán delay rải rác từng mảnh giấy
-      e.target.style.transitionDelay = `${delayCounter * 0.08}s`;
-      delayCounter++;
-      clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => { delayCounter = 0; }, 100);
+/* ═══════════════════════════════════════════════════════════
+   KHỞI TẠO — Check localStorage khi load trang
+═══════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  const savedEmail = localStorage.getItem('colar_email');
+  const savedName  = localStorage.getItem('colar_name');
+  const savedConvId = localStorage.getItem('colar_conv_id');
 
-      requestAnimationFrame(() => {
-        e.target.classList.add('in');
-      });
-      io.unobserve(e.target);
-    } 
-  });
-}, { threshold: 0.1 });
+  if (savedEmail) {
+    // APP MODE: Đã có session -> Nhấc khung chat lên, dọn dẹp web
+    conversationId = savedConvId || '';
+    
+    // 1. Chuyển khung chat lên ngay dưới thư ngỏ (Founder note)
+    const chatEl = document.getElementById('chat-state');
+    const founderNote = document.querySelector('.founder-note');
+    founderNote.parentNode.insertBefore(chatEl, founderNote.nextSibling);
 
-// Cấp góc xoay (rotate) ngẫu nhiên bằng JS
-document.querySelectorAll('.paste-elem').forEach(el => {
-  const startRot = (Math.random() * 6 - 3).toFixed(2); // Vung vẩy từ -3 đến +3 độ lúc đáp vào
-  const endRot = (Math.random() * 1.5 - 0.75).toFixed(2); // Nằm lệch từ -0.75 đến +0.75 độ trên trang giấy
-  el.style.setProperty('--start-rot', `${startRot}deg`);
-  el.style.setProperty('--end-rot', `${endRot}deg`);
-  io.observe(el);
+    // 2. Xóa các mảng khối marketing
+    const elementsToHide = ['features', 'how-to', 'demo', 'form-wrap', 'proof-mini', 'beta-bar'];
+    elementsToHide.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+
+    // 3. Xóa các link thừa trên thanh menu Nav
+    document.getElementById('nav-link-1').style.display = 'none';
+    document.getElementById('nav-link-2').style.display = 'none';
+    document.getElementById('nav-link-3').style.display = 'none';
+    
+    const navCta = document.getElementById('nav-cta-btn');
+    if (navCta) navCta.style.display = 'none';
+
+    // 4. Mở khung chat (cờ false để không bị nhảy trang)
+    showChat(savedEmail, savedName || 'Mày', false);
+  }
+
+  // Animations
+  initAnimations();
 });
 
-/* ── CHỖ CHÈN VIDEO SAU NÀY ── */
-function loadVideo() {
-  alert('Video demo đang được edit. Tao sẽ update sớm!');
-}
-
-/* ── LOGIC XỬ LÝ FORM & BẮN DATA SANG MAKE.COM ── */
+/* ═══════════════════════════════════════════════════════════
+   FORM SUBMIT
+═══════════════════════════════════════════════════════════ */
 async function handleSubmit() {
   const name  = document.getElementById('f-name').value.trim();
-  const email = document.getElementById('f-email').value.trim().toLowerCase(); // Ép về chữ thường
+  const email = document.getElementById('f-email').value.trim().toLowerCase();
   const year  = document.getElementById('f-year').value;
   const pain  = document.getElementById('f-pain').value.trim();
 
   let valid = true;
-  
-  // 1. Check rỗng
-  if (!name)  { document.getElementById('f-name').style.borderColor='#bf2b1a'; valid=false }
-  if (!pain)  { document.getElementById('f-pain').style.borderColor='#bf2b1a'; valid=false }
-  
-  // 2. CHẾ ĐỘ ĐỘC TÀI: Block toàn bộ mọi thứ không phải Gmail chuẩn
-  // Giải thích RegEx: Bắt đầu bằng chữ/số/dấu chấm, bắt buộc kết thúc bằng đúng @gmail.com
-  const strictGmailRegex = /^[a-z0-9.]+@gmail\.com$/;
-  
-  if (!email || !strictGmailRegex.test(email)) { 
-      document.getElementById('f-email').style.borderColor='#bf2b1a'; 
-      
-      // Xóa giá trị sai và chửi thẳng vào mặt bằng placeholder
-      document.getElementById('f-email').value = '';
-      document.getElementById('f-email').placeholder = "Alex! Chỉ nhận đuôi @gmail.com chuẩn.";
-      valid=false 
-  }
+  if (!name) { document.getElementById('f-name').style.borderColor='#bf2b1a'; valid=false; }
+  if (!pain) { document.getElementById('f-pain').style.borderColor='#bf2b1a'; valid=false; }
 
+  const strictGmailRegex = /^[a-z0-9.]+@gmail\.com$/;
+  if (!email || !strictGmailRegex.test(email)) {
+    document.getElementById('f-email').style.borderColor='#bf2b1a';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-email').placeholder = 'Chỉ nhận @gmail.com chuẩn nhé!';
+    valid = false;
+  }
   if (!valid) return;
 
   const btn = document.getElementById('submit-btn');
-  btn.textContent = 'Đang đẩy data...'; 
-  btn.disabled = true;
+  btn.textContent = 'Đang xử lý...'; btn.disabled = true;
 
-  // Đóng gói Data
-  const payload = {
-    name: name,
-    email: email, 
-    year: year || "Chưa khai báo",
-    pain: pain,
-    source: 'landing_colar_beta',
-    timestamp: new Date().toISOString()
-  };
+  // 1. Lưu localStorage 
+  localStorage.setItem('colar_email', email);
+  localStorage.setItem('colar_name', name);
 
-  // Bắn Webhook đi
-  try {
-    await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-  } catch (err) {
-    console.log("Webhook CORS block hoặc lỗi mạng, nhưng form vẫn chạy tiếp để bypass UX.");
-  }
+  // 2. Bắn webhook sang Make.com 
+  fetch(WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name, email, year: year || 'Chưa khai báo',
+      pain, source: 'landing_colar_beta',
+      timestamp: new Date().toISOString()
+    })
+  }).catch(() => {}); 
 
-  // Chuyển giao diện sang Success State
-  document.getElementById('form-wrap').style.display = 'none';
-  document.getElementById('success-state').classList.add('show');
-  document.getElementById('success-state').scrollIntoView({behavior:'smooth', block:'center'});
+  // 3. Hiện chat (cờ true để tự động cuộn trang xuống cho mượt)
+  showChat(email, name, true);
+
+  if (window.posthog) posthog.capture('colar_form_submitted', { email, year });
 }
 
-// Xóa viền đỏ khi user bắt đầu gõ lại
-['f-name','f-email','f-pain'].forEach(id => {
-  document.getElementById(id).addEventListener('input', function(){ this.style.borderColor='' });
-});
-// Hỗ trợ Enter ở field email để submit nhanh
-document.getElementById('f-email').addEventListener('keydown', e => { if(e.key==='Enter') handleSubmit() });
+/* ═══════════════════════════════════════════════════════════
+   SHOW / HIDE CHAT
+═══════════════════════════════════════════════════════════ */
+function showChat(email, name, shouldScroll = true) {
+  document.getElementById('form-wrap').style.display = 'none';
+  document.getElementById('chat-header-user').textContent = email;
 
-/* ── XỬ LÝ HAMBURGER MENU MOBILE ── */
+  const chatEl = document.getElementById('chat-state');
+  chatEl.classList.add('show');
+
+  if (shouldScroll) {
+    chatEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => document.getElementById('chat-input')?.focus(), 400);
+  }
+
+  const navCta = document.getElementById('nav-cta-btn');
+  if (navCta) { navCta.textContent = 'Mở Colar →'; navCta.href = '#chat-state'; }
+  document.getElementById('proof-mini').style.display = 'none';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOGOUT / ĐỔI TÀI KHOẢN
+═══════════════════════════════════════════════════════════ */
+function handleLogout() {
+  if (!confirm('Đăng ký bằng email khác? Lịch sử chat sẽ mất.')) return;
+  localStorage.removeItem('colar_email');
+  localStorage.removeItem('colar_name');
+  localStorage.removeItem('colar_conv_id');
+  location.reload();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEND MESSAGE (Gọi Vercel Serverless)
+═══════════════════════════════════════════════════════════ */
+async function sendMessage() {
+  if (isWaiting) return;
+
+  const input = document.getElementById('chat-input');
+  const message = input.value.trim();
+  if (!message) return;
+
+  const userEmail = localStorage.getItem('colar_email');
+  if (!userEmail) { handleLogout(); return; }
+
+  document.getElementById('chat-hint').style.display = 'none';
+  input.value = '';
+  autoResize(input);
+
+  appendMessage('user', message);
+  setTyping(true);
+  isWaiting = true;
+  document.getElementById('chat-send-btn').disabled = true;
+
+  try {
+    const res = await fetch(CHAT_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        userEmail,
+        sessionId: conversationId,
+      })
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+    }
+
+    if (data.conversationId) {
+      conversationId = data.conversationId;
+      localStorage.setItem('colar_conv_id', conversationId);
+    }
+
+    appendMessage('ai', data.answer || 'Tao không hiểu ý mày lắm, thử hỏi rõ hơn được không?');
+    if (window.posthog) posthog.capture('colar_message_sent', { hasAnswer: !!data.answer });
+
+  } catch (err) {
+    console.error('Chat error:', err);
+    // Nếu lỗi do rate limit hoặc chết server
+    appendMessage('ai', 'Hệ thống đang nghẽn hoặc bị lỗi (Rate Limit). Mày đợi tao 10 giây rồi hỏi lại nhé.');
+  } finally {
+    setTyping(false);
+    isWaiting = false;
+    document.getElementById('chat-send-btn').disabled = false;
+    input.focus();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════ */
+function appendMessage(role, text) {
+  const container = document.getElementById('chat-messages');
+  const typing = document.getElementById('typing-indicator');
+
+  const msgEl = document.createElement('div');
+  msgEl.className = `msg ${role}`;
+
+  if (role === 'ai') {
+    msgEl.innerHTML = `
+      <div class="msg-avatar"><img src="./avatar.png" alt="Colar"></div>
+      <div class="msg-bubble">${formatMarkdown(text)}</div>`;
+  } else {
+    msgEl.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div>`;
+  }
+
+  container.insertBefore(msgEl, typing);
+  container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+}
+
+function setTyping(show) {
+  const el = document.getElementById('typing-indicator');
+  if (show) el.classList.add('show');
+  else el.classList.remove('show');
+
+  if (show) {
+    const container = document.getElementById('chat-messages');
+    container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+  }
+}
+
+function sendHint(btn) {
+  const input = document.getElementById('chat-input');
+  input.value = btn.textContent;
+  autoResize(input);
+  sendMessage();
+}
+
+function handleInputKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function formatMarkdown(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^- (.+)/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^(.+)/, '<p>$1')
+    .replace(/(.+)$/, '$1</p>');
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCRAPBOOK ANIMATIONS
+═══════════════════════════════════════════════════════════ */
+function initAnimations() {
+  let delayCounter = 0;
+  let resetTimer = null;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = `${delayCounter * 0.08}s`;
+        delayCounter++;
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => { delayCounter = 0; }, 100);
+        requestAnimationFrame(() => e.target.classList.add('in'));
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.paste-elem').forEach(el => {
+    const startRot = (Math.random() * 6 - 3).toFixed(2);
+    const endRot   = (Math.random() * 1.5 - 0.75).toFixed(2);
+    el.style.setProperty('--start-rot', `${startRot}deg`);
+    el.style.setProperty('--end-rot', `${endRot}deg`);
+    io.observe(el);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CLEAR ERRORS
+═══════════════════════════════════════════════════════════ */
+['f-name','f-email','f-pain'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', function(){ this.style.borderColor=''; });
+});
+document.getElementById('f-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleSubmit();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   HAMBURGER MENU
+═══════════════════════════════════════════════════════════ */
 const hamburgerBtn = document.getElementById('hamburger');
 const mobileNavLinks = document.getElementById('nav-links');
-const navItems = document.querySelectorAll('.nav-link');
-
-hamburgerBtn.addEventListener('click', () => {
-  mobileNavLinks.classList.toggle('open');
-});
-
-// Click vào link tự động đóng menu
-navItems.forEach(item => {
-  item.addEventListener('click', () => {
-    mobileNavLinks.classList.remove('open');
-  });
+hamburgerBtn.addEventListener('click', () => mobileNavLinks.classList.toggle('open'));
+document.querySelectorAll('.nav-link').forEach(item => {
+  item.addEventListener('click', () => mobileNavLinks.classList.remove('open'));
 });
 </script>
 </body>
