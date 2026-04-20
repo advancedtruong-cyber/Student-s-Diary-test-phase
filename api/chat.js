@@ -1,47 +1,97 @@
-export default async function handler(req, res) {
+// File: api/chat.js
+// Edge Runtime — lách timeout 10s của Vercel Hobby plan
+// Cú pháp Web API (Request/Response), không dùng Express (req, res)
+
+export const config = {
+  runtime: 'edge',
+};
+
+export default async function handler(req) {
   const DIFY_API_KEY = process.env.DIFY_API_KEY;
 
   if (!DIFY_API_KEY) {
-    return res.status(500).json({ error: 'Server chưa được cấu hình API Key' });
+    return new Response(
+      JSON.stringify({ error: 'server_error', detail: 'Thiếu API Key' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 
-  // ==========================================
-  // CỔNG GET: LẤY LỊCH SỬ CHAT KHI F5
-  // ==========================================
+  // ── CORS headers (cần thiết nếu sau này tách domain) ──
+  const corsHeaders = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  };
+
+  // Pre-flight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  // ══════════════════════════════════════════════════════
+  // GET — Lấy lịch sử chat khi user F5
+  // ══════════════════════════════════════════════════════
   if (req.method === 'GET') {
-    const { userEmail, conversationId } = req.query;
+    const { searchParams } = new URL(req.url);
+    const userEmail      = searchParams.get('userEmail');
+    const conversationId = searchParams.get('conversationId');
 
     if (!userEmail || !conversationId) {
-      return res.status(400).json({ error: 'Thiếu thông tin user hoặc session' });
+      return new Response(
+        JSON.stringify({ error: 'bad_request', detail: 'Thiếu userEmail hoặc conversationId' }),
+        { status: 400, headers: corsHeaders }
+      );
     }
 
     try {
-      const response = await fetch(`https://api.dify.ai/v1/messages?user=${encodeURIComponent(userEmail)}&conversation_id=${encodeURIComponent(conversationId)}&limit=100`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${DIFY_API_KEY}` }
-      });
-      
-      const data = await response.json();
-      if (!response.ok) return res.status(response.status).json({ error: data.message || 'Lỗi từ Dify' });
-      
-      return res.status(200).json(data);
-    } catch (error) {
-      return res.status(500).json({ error: 'Lỗi lấy lịch sử' });
+      const difyRes = await fetch(
+        `https://api.dify.ai/v1/messages?user=${encodeURIComponent(userEmail)}&conversation_id=${encodeURIComponent(conversationId)}&limit=50`,
+        { headers: { 'Authorization': `Bearer ${DIFY_API_KEY}` } }
+      );
+      const data = await difyRes.json();
+      return new Response(JSON.stringify(data), { status: difyRes.status, headers: corsHeaders });
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'server_error', detail: 'Lỗi lấy lịch sử' }),
+        { status: 500, headers: corsHeaders }
+      );
     }
   }
 
-  // ==========================================
-  // CỔNG POST: GỬI TIN NHẮN MỚI
-  // ==========================================
+  // ══════════════════════════════════════════════════════
+  // POST — Gửi tin nhắn mới
+  // ══════════════════════════════════════════════════════
   if (req.method === 'POST') {
-    const { message, sessionId, userEmail } = req.body;
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'bad_request', detail: 'Invalid JSON body' }),
+        { status: 400, headers: corsHeaders }
+      );
+    }
 
-    if (!userEmail) {
-      return res.status(401).json({ error: 'Unauthorized: Trạm gác yêu cầu Email' });
+    const { message, sessionId, userEmail } = body;
+
+    // Chốt chặn: không có email → 401
+    if (!userEmail || !userEmail.includes('@gmail.com')) {
+      return new Response(
+        JSON.stringify({ error: 'unauthorized', detail: 'Cần email Gmail hợp lệ' }),
+        { status: 401, headers: corsHeaders }
+      );
+    }
+
+    // Chốt chặn: không có message → 400
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'bad_request', detail: 'Message không được rỗng' }),
+        { status: 400, headers: corsHeaders }
+      );
     }
 
     try {
-      const response = await fetch('https://api.dify.ai/v1/chat-messages', {
+      const difyRes = await fetch('https://api.dify.ai/v1/chat-messages', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${DIFY_API_KEY}`,
@@ -49,22 +99,46 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           inputs: {},
-          query: message,
-          response_mode: "blocking",
-          conversation_id: sessionId || "",
-          user: userEmail 
-        })
+          query: message.trim(),
+          response_mode: 'blocking',
+          conversation_id: sessionId || '',
+          user: userEmail,
+        }),
       });
 
-      const data = await response.json();
-      if (!response.ok) return res.status(response.status).json({ error: data.message || 'Lỗi từ Dify' });
-      
-      return res.status(200).json(data);
-    } catch (error) {
-      return res.status(500).json({ error: 'Lỗi kết nối máy chủ AI' });
+      const data = await difyRes.json();
+
+      // Bắt lỗi từ Dify — phân loại rõ 429 vs lỗi khác
+      if (!difyRes.ok) {
+        return new Response(
+          JSON.stringify({
+            error: difyRes.status === 429 ? 'rate_limit' : 'server_error',
+            detail: data.message || `Dify returned ${difyRes.status}`,
+          }),
+          { status: difyRes.status, headers: corsHeaders }
+        );
+      }
+
+      // Trả về đã mapping — fix nguyên nhân 2 (snake_case → camelCase)
+      return new Response(
+        JSON.stringify({
+          answer:         data.answer          || '',
+          conversationId: data.conversation_id || sessionId || '',
+        }),
+        { status: 200, headers: corsHeaders }
+      );
+
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'server_error', detail: 'Mất kết nối tới Dify' }),
+        { status: 500, headers: corsHeaders }
+      );
     }
   }
 
-  // CHẶN CÁC METHOD KHÁC
-  return res.status(405).json({ error: 'Method Not Allowed' });
+  // Block mọi method khác
+  return new Response(
+    JSON.stringify({ error: 'method_not_allowed' }),
+    { status: 405, headers: corsHeaders }
+  );
 }
